@@ -15,8 +15,8 @@ project(CppRestSwaggerClient)
 
 
 # THE LOCATION OF OUTPUT BINARIES
-set(CMAKE_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_DIR})
+#set(CMAKE_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
+#set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_DIR})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -28,7 +28,9 @@ endif()
 message("A ${CMAKE_BUILD_TYPE} build configuration is detected")
 
 # Update require components as necessary
-#find_package(Boost 1.45.0 REQUIRED COMPONENTS ${Boost_THREAD_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+find_package(Boost 1.45.0 REQUIRED COMPONENTS thread system regex date_time program_options filesystem)
+find_package(OpenSSL 1.0.0 REQUIRED)
+find_library(CPPREST_LIB cpprest)
 
 # build and set path to cpp rest sdk
 #set(CPPREST_ROOT ${PROJECT_SOURCE_DIR}/../../../developmentTools/3rdParty/cpprest)
@@ -47,3 +49,12 @@ set(SUPPORTING_FILES  "ApiClient" "ApiConfiguration" "ApiException" "HttpContent
 file(GLOB SOURCE_FILES  "api/*"  "model/*")
 
 add_library(${PROJECT_NAME} ${SUPPORTING_FILES} ${SOURCE_FILES})
+
+message(Boost_FOUND: ${Boost_FOUND})
+message(Boost_LIBRARIES: ${Boost_LIBRARIES})
+message(Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS})
+message(Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS})
+message(Boost_SYSTEM_LIBRARY: ${Boost_SYSTEM_LIBRARY})
+
+add_executable(Example Example.cpp)
+target_link_libraries(Example ${PROJECT_NAME} ${CPPREST_LIB} ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} pthread)
