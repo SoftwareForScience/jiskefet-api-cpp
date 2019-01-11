@@ -11,7 +11,7 @@
 cmake_minimum_required (VERSION 2.8)
 
 #PROJECT's NAME
-project(CppRestSwaggerClient)
+project(JiskefetApiCpp)
 
 
 # THE LOCATION OF OUTPUT BINARIES
@@ -50,11 +50,41 @@ file(GLOB SOURCE_FILES  "api/*"  "model/*")
 
 add_library(${PROJECT_NAME} ${SUPPORTING_FILES} ${SOURCE_FILES})
 
-message(Boost_FOUND: ${Boost_FOUND})
-message(Boost_LIBRARIES: ${Boost_LIBRARIES})
-message(Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS})
-message(Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS})
-message(Boost_SYSTEM_LIBRARY: ${Boost_SYSTEM_LIBRARY})
+add_executable(jiskefet-api-cpp-example Example.cpp)
+target_link_libraries(jiskefet-api-cpp-example ${PROJECT_NAME} ${CPPREST_LIB} ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} pthread)
 
-add_executable(Example Example.cpp)
-target_link_libraries(Example ${PROJECT_NAME} ${CPPREST_LIB} ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} pthread)
+install(TARGETS jiskefet-api-cpp-example DESTINATION bin)
+install(TARGETS jiskefet-api-cpp-example JiskefetApiCpp
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib/static)
+install(FILES 
+    ApiClient.h
+    ApiConfiguration.h
+    HttpContent.h
+    IHttpBody.h
+    JsonBody.h
+    ModelBase.h
+    MultipartFormData.h
+    Object.h
+    DESTINATION include/)
+install(FILES
+    api/AttachmentsApi.h
+    api/AuthenticationApi.h
+    api/LogsApi.h
+    api/OverviewApi.h
+    api/RunsApi.h
+    api/SubsystemsApi.h
+    api/UsersApi.h
+    DESTINATION include/api/)
+install(FILES
+    model/CreateAttachmentDto.h
+    model/CreateLogDto.h
+    model/CreateRunDto.h
+    model/CreateSubSystemPermissionDto.h
+    model/Date.h
+    model/LinkLogToRunDto.h
+    model/LinkRunToLogDto.h
+    model/SubSystem.h
+    model/User.h
+    DESTINATION include/model/)
