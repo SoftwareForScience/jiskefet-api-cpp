@@ -18,7 +18,7 @@ project(JiskefetApiCpp)
 #set(CMAKE_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
 #set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_DIR})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -fsanitize=address")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -53,7 +53,6 @@ add_library(${PROJECT_NAME} ${SUPPORTING_FILES} ${SOURCE_FILES})
 add_executable(jiskefet-api-cpp-example Example.cpp)
 target_link_libraries(jiskefet-api-cpp-example ${PROJECT_NAME} ${CPPREST_LIB} ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} pthread)
 
-install(TARGETS jiskefet-api-cpp-example DESTINATION bin)
 install(TARGETS jiskefet-api-cpp-example JiskefetApiCpp
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib

@@ -21,6 +21,10 @@ namespace model {
 
 CreateRunDto::CreateRunDto()
 {
+    m_TimeO2Start = utility::datetime();
+    m_TimeTrgStart = utility::datetime();
+    m_TimeO2End = utility::datetime();
+    m_TimeTrgEnd = utility::datetime();
     m_RunType = utility::conversions::to_string_t("");
     m_RunQuality = utility::conversions::to_string_t("");
     m_ActivityId = utility::conversions::to_string_t("");
@@ -66,18 +70,14 @@ web::json::value CreateRunDto::toJson() const
 
 void CreateRunDto::fromJson(web::json::value& val)
 {
-    std::shared_ptr<Object> newTimeO2Start(nullptr);
-    newTimeO2Start->fromJson(val[utility::conversions::to_string_t("timeO2Start")]);
-    setTimeO2Start( newTimeO2Start );
-    std::shared_ptr<Object> newTimeTrgStart(nullptr);
-    newTimeTrgStart->fromJson(val[utility::conversions::to_string_t("timeTrgStart")]);
-    setTimeTrgStart( newTimeTrgStart );
-    std::shared_ptr<Object> newTimeO2End(nullptr);
-    newTimeO2End->fromJson(val[utility::conversions::to_string_t("timeO2End")]);
-    setTimeO2End( newTimeO2End );
-    std::shared_ptr<Object> newTimeTrgEnd(nullptr);
-    newTimeTrgEnd->fromJson(val[utility::conversions::to_string_t("timeTrgEnd")]);
-    setTimeTrgEnd( newTimeTrgEnd );
+    setTimeO2Start
+    (ModelBase::dateFromJson(val[utility::conversions::to_string_t("timeO2Start")]));
+    setTimeTrgStart
+    (ModelBase::dateFromJson(val[utility::conversions::to_string_t("timeTrgStart")]));
+    setTimeO2End
+    (ModelBase::dateFromJson(val[utility::conversions::to_string_t("timeO2End")]));
+    setTimeTrgEnd
+    (ModelBase::dateFromJson(val[utility::conversions::to_string_t("timeTrgEnd")]));
     setRunType(ModelBase::stringFromJson(val[utility::conversions::to_string_t("runType")]));
     setRunQuality(ModelBase::stringFromJson(val[utility::conversions::to_string_t("runQuality")]));
     setActivityId(ModelBase::stringFromJson(val[utility::conversions::to_string_t("activityId")]));
@@ -98,10 +98,10 @@ void CreateRunDto::toMultipart(std::shared_ptr<MultipartFormData> multipart, con
         namePrefix += utility::conversions::to_string_t(".");
     }
 
-    m_TimeO2Start->toMultipart(multipart, utility::conversions::to_string_t("timeO2Start."));
-    m_TimeTrgStart->toMultipart(multipart, utility::conversions::to_string_t("timeTrgStart."));
-    m_TimeO2End->toMultipart(multipart, utility::conversions::to_string_t("timeO2End."));
-    m_TimeTrgEnd->toMultipart(multipart, utility::conversions::to_string_t("timeTrgEnd."));
+    multipart->add(ModelBase::toHttpContent(namePrefix + utility::conversions::to_string_t("timeO2Start"), m_TimeO2Start));
+    multipart->add(ModelBase::toHttpContent(namePrefix + utility::conversions::to_string_t("timeTrgStart"), m_TimeTrgStart));
+    multipart->add(ModelBase::toHttpContent(namePrefix + utility::conversions::to_string_t("timeO2End"), m_TimeO2End));
+    multipart->add(ModelBase::toHttpContent(namePrefix + utility::conversions::to_string_t("timeTrgEnd"), m_TimeTrgEnd));
     multipart->add(ModelBase::toHttpContent(namePrefix + utility::conversions::to_string_t("runType"), m_RunType));
     multipart->add(ModelBase::toHttpContent(namePrefix + utility::conversions::to_string_t("runQuality"), m_RunQuality));
     multipart->add(ModelBase::toHttpContent(namePrefix + utility::conversions::to_string_t("activityId"), m_ActivityId));
@@ -122,18 +122,10 @@ void CreateRunDto::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, c
         namePrefix += utility::conversions::to_string_t(".");
     }
 
-    std::shared_ptr<Object> newTimeO2Start(nullptr);
-    newTimeO2Start->fromMultiPart(multipart, utility::conversions::to_string_t("timeO2Start."));
-    setTimeO2Start( newTimeO2Start );
-    std::shared_ptr<Object> newTimeTrgStart(nullptr);
-    newTimeTrgStart->fromMultiPart(multipart, utility::conversions::to_string_t("timeTrgStart."));
-    setTimeTrgStart( newTimeTrgStart );
-    std::shared_ptr<Object> newTimeO2End(nullptr);
-    newTimeO2End->fromMultiPart(multipart, utility::conversions::to_string_t("timeO2End."));
-    setTimeO2End( newTimeO2End );
-    std::shared_ptr<Object> newTimeTrgEnd(nullptr);
-    newTimeTrgEnd->fromMultiPart(multipart, utility::conversions::to_string_t("timeTrgEnd."));
-    setTimeTrgEnd( newTimeTrgEnd );
+    setTimeO2Start(ModelBase::dateFromHttpContent(multipart->getContent(utility::conversions::to_string_t("timeO2Start"))));
+    setTimeTrgStart(ModelBase::dateFromHttpContent(multipart->getContent(utility::conversions::to_string_t("timeTrgStart"))));
+    setTimeO2End(ModelBase::dateFromHttpContent(multipart->getContent(utility::conversions::to_string_t("timeO2End"))));
+    setTimeTrgEnd(ModelBase::dateFromHttpContent(multipart->getContent(utility::conversions::to_string_t("timeTrgEnd"))));
     setRunType(ModelBase::stringFromHttpContent(multipart->getContent(utility::conversions::to_string_t("runType"))));
     setRunQuality(ModelBase::stringFromHttpContent(multipart->getContent(utility::conversions::to_string_t("runQuality"))));
     setActivityId(ModelBase::stringFromHttpContent(multipart->getContent(utility::conversions::to_string_t("activityId"))));
@@ -146,46 +138,46 @@ void CreateRunDto::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, c
     setBytesTimeframeBuilder(ModelBase::int32_tFromHttpContent(multipart->getContent(utility::conversions::to_string_t("bytesTimeframeBuilder"))));
 }
 
-std::shared_ptr<Object> CreateRunDto::getTimeO2Start() const
+utility::datetime CreateRunDto::getTimeO2Start() const
 {
     return m_TimeO2Start;
 }
 
 
-void CreateRunDto::setTimeO2Start(std::shared_ptr<Object> value)
+void CreateRunDto::setTimeO2Start(utility::datetime value)
 {
     m_TimeO2Start = value;
     
 }
-std::shared_ptr<Object> CreateRunDto::getTimeTrgStart() const
+utility::datetime CreateRunDto::getTimeTrgStart() const
 {
     return m_TimeTrgStart;
 }
 
 
-void CreateRunDto::setTimeTrgStart(std::shared_ptr<Object> value)
+void CreateRunDto::setTimeTrgStart(utility::datetime value)
 {
     m_TimeTrgStart = value;
     
 }
-std::shared_ptr<Object> CreateRunDto::getTimeO2End() const
+utility::datetime CreateRunDto::getTimeO2End() const
 {
     return m_TimeO2End;
 }
 
 
-void CreateRunDto::setTimeO2End(std::shared_ptr<Object> value)
+void CreateRunDto::setTimeO2End(utility::datetime value)
 {
     m_TimeO2End = value;
     
 }
-std::shared_ptr<Object> CreateRunDto::getTimeTrgEnd() const
+utility::datetime CreateRunDto::getTimeTrgEnd() const
 {
     return m_TimeTrgEnd;
 }
 
 
-void CreateRunDto::setTimeTrgEnd(std::shared_ptr<Object> value)
+void CreateRunDto::setTimeTrgEnd(utility::datetime value)
 {
     m_TimeTrgEnd = value;
     

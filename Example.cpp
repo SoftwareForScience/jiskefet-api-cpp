@@ -132,34 +132,34 @@ int main(int argc, char const *argv[])
     pplx::task<void> taskRunsPost = runsApi.runsPost(createRunDto);
     taskRunsPost.get();
 
-    // pplx::task<std::shared_ptr<Object>> taskRunsGet = runsApi.runsGet(
-    //     boost::optional<utility::string_t>(), // orderBy,
-    //     boost::optional<utility::string_t>(), // orderDirection,
-    //     boost::optional<utility::string_t>(), // pageSize,
-    //     boost::optional<utility::string_t>(), // pageNumber,
-    //     boost::optional<utility::string_t>(), // runNumber,
-    //     boost::optional<utility::datetime>(), // startTimeO2Start,
-    //     boost::optional<utility::datetime>(), // endTimeO2Start,
-    //     boost::optional<utility::datetime>(), // startTimeTrgStart,
-    //     boost::optional<utility::datetime>(), // endTimeTrgStart,
-    //     boost::optional<utility::datetime>(), // startTimeTrgEnd,
-    //     boost::optional<utility::datetime>(), // endTimeTrgEnd,
-    //     boost::optional<utility::datetime>(), // startTimeO2End,
-    //     boost::optional<utility::datetime>(), // endTimeO2End,
-    //     boost::optional<utility::string_t>(), // activityId,
-    //     boost::optional<int32_t>(), // runType,
-    //     boost::optional<int32_t>() // runQuality
-    // );
+    pplx::task<std::shared_ptr<Object>> taskRunsGet = runsApi.runsGet(
+        boost::optional<utility::string_t>(), // orderBy,
+        boost::optional<utility::string_t>(), // orderDirection,
+        boost::optional<utility::string_t>(), // pageSize,
+        boost::optional<utility::string_t>(), // pageNumber,
+        boost::optional<utility::string_t>(), // runNumber,
+        boost::optional<utility::datetime>(), // startTimeO2Start,
+        boost::optional<utility::datetime>(), // endTimeO2Start,
+        boost::optional<utility::datetime>(), // startTimeTrgStart,
+        boost::optional<utility::datetime>(), // endTimeTrgStart,
+        boost::optional<utility::datetime>(), // startTimeTrgEnd,
+        boost::optional<utility::datetime>(), // endTimeTrgEnd,
+        boost::optional<utility::datetime>(), // startTimeO2End,
+        boost::optional<utility::datetime>(), // endTimeO2End,
+        boost::optional<utility::string_t>(), // activityId,
+        boost::optional<int32_t>(), // runType,
+        boost::optional<int32_t>() // runQuality
+    );
     
-    // try {
-    //     taskRunsGet.get();
-    //     // std::cout << "Executing HTTP request..." << std::fflush;
-    //     // std::shared_ptr<Object> result = taskRunsGet.get();
-    //     // std::cout << " done!" << std::endl;
-    //     // std::cout << "Result:\n" << result << std::endl;
-    // } catch(const std::exception& e) {
-    //     std::cout << "runsGet() exception: " << e.what() << '\n';
-    // }
+    try {
+        // taskRunsGet.get();
+        std::cout << "Executing HTTP request..." << std::fflush;
+        std::shared_ptr<Object> result = taskRunsGet.get();
+        std::cout << " done!" << std::endl;
+        std::cout << "Result:\n" << result << std::endl;
+    } catch(const std::exception& e) {
+        std::cout << "runsGet() exception: " << e.what() << '\n';
+    }
 
     return 0;
 }

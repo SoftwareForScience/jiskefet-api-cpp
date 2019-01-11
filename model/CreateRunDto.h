@@ -23,7 +23,6 @@
 #include "../ModelBase.h"
 
 #include <cpprest/details/basic_types.h>
-#include "Object.h"
 
 namespace io {
 namespace swagger {
@@ -57,23 +56,23 @@ public:
     /// <summary>
     /// 
     /// </summary>
-    std::shared_ptr<Object> getTimeO2Start() const;
-        void setTimeO2Start(std::shared_ptr<Object> value);
+    utility::datetime getTimeO2Start() const;
+        void setTimeO2Start(utility::datetime value);
     /// <summary>
     /// 
     /// </summary>
-    std::shared_ptr<Object> getTimeTrgStart() const;
-        void setTimeTrgStart(std::shared_ptr<Object> value);
+    utility::datetime getTimeTrgStart() const;
+        void setTimeTrgStart(utility::datetime value);
     /// <summary>
     /// 
     /// </summary>
-    std::shared_ptr<Object> getTimeO2End() const;
-        void setTimeO2End(std::shared_ptr<Object> value);
+    utility::datetime getTimeO2End() const;
+        void setTimeO2End(utility::datetime value);
     /// <summary>
     /// 
     /// </summary>
-    std::shared_ptr<Object> getTimeTrgEnd() const;
-        void setTimeTrgEnd(std::shared_ptr<Object> value);
+    utility::datetime getTimeTrgEnd() const;
+        void setTimeTrgEnd(utility::datetime value);
     /// <summary>
     /// What kind of run.
     /// </summary>
@@ -126,10 +125,10 @@ public:
         void setBytesTimeframeBuilder(int32_t value);
 
 protected:
-    std::shared_ptr<Object> m_TimeO2Start;
-        std::shared_ptr<Object> m_TimeTrgStart;
-        std::shared_ptr<Object> m_TimeO2End;
-        std::shared_ptr<Object> m_TimeTrgEnd;
+    utility::datetime m_TimeO2Start;
+        utility::datetime m_TimeTrgStart;
+        utility::datetime m_TimeO2End;
+        utility::datetime m_TimeTrgEnd;
         utility::string_t m_RunType;
         utility::string_t m_RunQuality;
         utility::string_t m_ActivityId;
