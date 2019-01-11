@@ -15,9 +15,9 @@ namespace
     }
 }
 
-/*namespace
+namespace
 {
-    struct GetRunParameters
+    struct GetRunsParameters
     {
         boost::optional<utility::string_t> orderBy;
         boost::optional<utility::string_t> orderDirection;
@@ -37,50 +37,68 @@ namespace
         boost::optional<int32_t> runQuality;
     };
 
-    class JiskefetApi 
+    struct PostRunParameters
     {
-        public:
-        JiskefetApi(std::string hostUrl, std::string apiPath, std::string apiToken) 
-        {
-            apiClient = std::make_shared<io::swagger::client::api::ApiClient>();
-            apiConfig = std::make_shared<io::swagger::client::api::ApiConfiguration>();
-            std::string baseUrl = "http://" + hostUrl + "/" + apiPath;
-            apiConfig->setBaseUrl(baseUrl);
-            apiConfig->setApiKey("Bearer", apiToken);
-            apiClient->setConfiguration(apiConfig);
-        }
-
-        void PostRun() 
-        {
-            io::swagger::client::api::RunsApi runsApi(apiClient);
-
-            web::json::value val = web::json::value::object();
-
-            using namespace io::swagger::client::api;
-            val[utility::conversions::to_string_t("timeO2Start")] = ModelBase::toJson(m_TimeO2Start);
-            val[utility::conversions::to_string_t("timeTrgStart")] = ModelBase::toJson(m_TimeTrgStart);
-            val[utility::conversions::to_string_t("timeO2End")] = ModelBase::toJson(m_TimeO2End);
-            val[utility::conversions::to_string_t("timeTrgEnd")] = ModelBase::toJson(m_TimeTrgEnd);
-            val[utility::conversions::to_string_t("runType")] = ModelBase::toJson(m_RunType);
-            val[utility::conversions::to_string_t("runQuality")] = ModelBase::toJson(m_RunQuality);
-            val[utility::conversions::to_string_t("activityId")] = ModelBase::toJson(m_ActivityId);
-            val[utility::conversions::to_string_t("nDetectors")] = ModelBase::toJson(m_NDetectors);
-            val[utility::conversions::to_string_t("nFlps")] = ModelBase::toJson(m_NFlps);
-            val[utility::conversions::to_string_t("nEpns")] = ModelBase::toJson(m_NEpns);
-            val[utility::conversions::to_string_t("nTimeframes")] = ModelBase::toJson(m_NTimeframes);
-            val[utility::conversions::to_string_t("nSubtimeframes")] = ModelBase::toJson(m_NSubtimeframes);
-            val[utility::conversions::to_string_t("bytesReadOut")] = ModelBase::toJson(m_BytesReadOut);
-            val[utility::conversions::to_string_t("bytesTimeframeBuilder")] = ModelBase::toJson(m_BytesTimeframeBuilder);
-
-            auto createRunDto = std::make_shared<io::swagger::client::api::CreateRunDto>();
-            pplx::task<void> task = runsApi.runsPost(createRunDto);
-        }
-
-        private:
-        std::shared_ptr<io::swagger::client::api::ApiClient> apiClient;
-        std::shared_ptr<io::swagger::client::api::ApiConfiguration> apiConfig;
+        utility::datetime m_TimeO2Start;
+        utility::datetime m_TimeTrgStart;
+        utility::datetime m_TimeO2End;
+        utility::datetime m_TimeTrgEnd;
+        utility::string_t m_RunType;
+        utility::string_t m_RunQuality;
+        utility::string_t m_ActivityId;
+        int32_t m_NDetectors;
+        int32_t m_NFlps;
+        int32_t m_NEpns;
+        int32_t m_NTimeframes;
+        int32_t m_NSubtimeframes;
+        int32_t m_BytesReadOut;
+        int32_t m_BytesTimeframeBuilder;
     };
-}*/
+
+    struct Run
+    {
+        utility::datetime timeO2Start;
+        utility::datetime timeTrgStart;
+        utility::datetime timeO2End;
+        utility::datetime timeTrgEnd;
+        utility::string_t runType;
+        utility::string_t runQuality;
+        utility::string_t activityId;
+        int32_t nDetectors;
+        int32_t nFlps;
+        int32_t nEpns;
+        int32_t nTimeframes;
+        int32_t nSubtimeframes;
+        int32_t bytesReadOut;
+        int32_t bytesTimeframeBuilder;
+    };
+
+    inline std::vector<Run> runsFromGetRunsResult(const std::shared_ptr<io::swagger::client::api::Object>& result) 
+    {
+        std::vector<Run> runs;
+        auto runsJson = result->getValue("runs").as_array();
+        for (const auto& item : runsJson) {
+            const auto& runJson = item.as_object();
+            Run run;
+            run.timeO2Start = utility::datetime().from_string(runJson.at("timeO2Start").as_string());
+            run.timeTrgStart = utility::datetime().from_string(runJson.at("timeTrgStart").as_string());
+            run.timeO2End = utility::datetime().from_string(runJson.at("timeO2End").as_string());
+            run.timeTrgEnd = utility::datetime().from_string(runJson.at("timeTrgEnd").as_string());
+            run.runType = runJson.at("runType").as_string();
+            run.runQuality = runJson.at("runQuality").as_string();
+            run.activityId = runJson.at("activityId").as_string();
+            run.nDetectors = runJson.at("nDetectors").as_integer();
+            run.nFlps = runJson.at("nFlps").as_integer();
+            run.nEpns = runJson.at("nEpns").as_integer();
+            run.nTimeframes = runJson.at("nTimeframes").as_integer();
+            run.nSubtimeframes = runJson.at("nSubtimeframes").as_integer();
+            run.bytesReadOut = runJson.at("bytesReadOut").as_integer();
+            run.bytesTimeframeBuilder = runJson.at("bytesTimeframeBuilder").as_integer();
+            runs.push_back(run);
+        }
+        return runs;
+    }
+}
 
 
 int main(int argc, char const *argv[])
@@ -110,51 +128,68 @@ int main(int argc, char const *argv[])
     apiClient->setConfiguration(apiConfig);
     RunsApi runsApi(apiClient);
 
-    std::cout << "Posting run\n";
-    web::json::value val = web::json::value::object();
-    val["timeO2Start"] = ModelBase::toJson(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
-    val["timeTrgStart"] = ModelBase::toJson(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
-    val["timeO2End"] = ModelBase::toJson(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
-    val["timeTrgEnd"] = ModelBase::toJson(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
-    val["runType"] = ModelBase::toJson(utility::string_t("my-run-type"));
-    val["runQuality"] = ModelBase::toJson(utility::string_t("my-run-quality"));
-    val["activityId"] = ModelBase::toJson(utility::string_t("cpp-api"));
-    val["nDetectors"] = ModelBase::toJson(int32_t(123));
-    val["nFlps"] = ModelBase::toJson(int32_t(200));
-    val["nEpns"] = ModelBase::toJson(int32_t(1000));
-    val["nTimeframes"] = ModelBase::toJson(int32_t(12312));
-    val["nSubtimeframes"] = ModelBase::toJson(int32_t(1231231));
-    val["bytesReadOut"] = ModelBase::toJson(int32_t(6899397343));
-    val["bytesTimeframeBuilder"] = ModelBase::toJson(int32_t(1235435));
-    auto createRunDto = std::make_shared<model::CreateRunDto>();
-    createRunDto->fromJson(val);
-    pplx::task<void> taskRunsPost = runsApi.runsPost(createRunDto);
-    taskRunsPost.get();
+    {
+        std::cout << "Posting run\n";
+        auto createRunDto = std::make_shared<model::CreateRunDto>();
+        createRunDto->setTimeO2Start(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
+        createRunDto->setTimeTrgStart(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
+        createRunDto->setTimeO2End(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
+        createRunDto->setTimeTrgEnd(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
+        createRunDto->setRunType("my-run-type");
+        createRunDto->setRunQuality("my-run-quality");
+        createRunDto->setActivityId("cpp-api");
+        createRunDto->setNDetectors(123);
+        createRunDto->setNFlps(200);
+        createRunDto->setNEpns(1000);
+        createRunDto->setNTimeframes(12312);
+        createRunDto->setNSubtimeframes(12312312);
+        createRunDto->setBytesReadOut(1024*1024*1024);
+        createRunDto->setBytesTimeframeBuilder(512*1024*1024);
+        pplx::task<void> taskRunsPost = runsApi.runsPost(createRunDto);
+        try {
+            taskRunsPost.get();
+        } catch(const std::exception& e) {
+            std::cout << "runsPost() exception: " << e.what() << '\n';
+        }
+    }
 
-    pplx::task<std::shared_ptr<Object>> taskRunsGet = runsApi.runsGet(
-        boost::optional<utility::string_t>(), // orderBy,
-        boost::optional<utility::string_t>(), // orderDirection,
-        boost::optional<utility::string_t>(), // pageSize,
-        boost::optional<utility::string_t>(), // pageNumber,
-        boost::optional<utility::string_t>(), // runNumber,
-        boost::optional<utility::datetime>(), // startTimeO2Start,
-        boost::optional<utility::datetime>(), // endTimeO2Start,
-        boost::optional<utility::datetime>(), // startTimeTrgStart,
-        boost::optional<utility::datetime>(), // endTimeTrgStart,
-        boost::optional<utility::datetime>(), // startTimeTrgEnd,
-        boost::optional<utility::datetime>(), // endTimeTrgEnd,
-        boost::optional<utility::datetime>(), // startTimeO2End,
-        boost::optional<utility::datetime>(), // endTimeO2End,
-        boost::optional<utility::string_t>(), // activityId,
-        boost::optional<int32_t>(), // runType,
-        boost::optional<int32_t>() // runQuality
-    );
-    
-    try {
-        std::shared_ptr<Object> result = taskRunsGet.get();
-        std::cout << "Runs:\n" << result->toJson() << std::endl;
-    } catch(const std::exception& e) {
-        std::cout << "runsGet() exception: " << e.what() << '\n';
+    {
+        pplx::task<std::shared_ptr<Object>> taskRunsGet = runsApi.runsGet(
+            boost::optional<utility::string_t>(), // orderBy,
+            boost::optional<utility::string_t>(), // orderDirection,
+            boost::optional<utility::string_t>(), // pageSize,
+            boost::optional<utility::string_t>(), // pageNumber,
+            boost::optional<utility::string_t>(), // runNumber,
+            boost::optional<utility::datetime>(), // startTimeO2Start,
+            boost::optional<utility::datetime>(), // endTimeO2Start,
+            boost::optional<utility::datetime>(), // startTimeTrgStart,
+            boost::optional<utility::datetime>(), // endTimeTrgStart,
+            boost::optional<utility::datetime>(), // startTimeTrgEnd,
+            boost::optional<utility::datetime>(), // endTimeTrgEnd,
+            boost::optional<utility::datetime>(), // startTimeO2End,
+            boost::optional<utility::datetime>(), // endTimeO2End,
+            boost::optional<utility::string_t>(), // activityId,
+            boost::optional<int32_t>(), // runType,
+            boost::optional<int32_t>() // runQuality
+        );
+        std::shared_ptr<Object> result;
+        try {
+            result = taskRunsGet.get();
+            std::cout << "Runs:\n" << result->toJson() << std::endl;
+        } catch(const std::exception& e) {
+            std::cout << "runsGet() exception: " << e.what() << '\n';
+        }   
+
+        std::vector<Run> runs = runsFromGetRunsResult(result);
+        std::cout << "Converted JSON:\n";
+        for (const auto& run : runs) {
+            std::cout << "  {\n"
+            << "    timeO2Start : " << run.timeO2Start.to_string() << '\n'
+            << "    runType : " << run.runType << '\n'
+            << "    nFlps : " << run.nFlps << '\n'
+            << "    bytesReadOut : " << run.bytesReadOut << '\n'
+            << "  },\n"; 
+        }
     }
 
     return 0;
