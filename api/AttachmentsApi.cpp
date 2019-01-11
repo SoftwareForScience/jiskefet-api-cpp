@@ -138,7 +138,7 @@ pplx::task<std::shared_ptr<Object>> AttachmentsApi::attachmentsIdLogsGet(int32_t
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {

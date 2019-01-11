@@ -138,7 +138,7 @@ pplx::task<std::shared_ptr<Object>> UsersApi::usersIdGet(int32_t id)
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
@@ -261,7 +261,7 @@ pplx::task<std::shared_ptr<Object>> UsersApi::usersIdTokensGet(int32_t id)
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {

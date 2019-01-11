@@ -99,9 +99,9 @@ int main(int argc, char const *argv[])
 
     std::cout << "JISKEFET_HOST:      " << hostUrl << '\n'
         << "JISKEFET_API_PATH:  " << apiPath << '\n'
-        << "JISKEFET_API_TOKEN: " << apiToken << std::endl;
+        << "JISKEFET_API_TOKEN: " << apiToken << '\n';
 
-    crossplat::threadpool::initialize_with_threads(1);
+    crossplat::threadpool::initialize_with_threads(1); // Optional, but it's generally not necessary to spawn 20+ threads
     auto apiClient = std::make_shared<ApiClient>();
     auto apiConfig = std::make_shared<ApiConfiguration>();
     apiConfig->setBaseUrl(baseUrl);
@@ -110,7 +110,7 @@ int main(int argc, char const *argv[])
     apiClient->setConfiguration(apiConfig);
     RunsApi runsApi(apiClient);
 
-    
+    std::cout << "Posting run\n";
     web::json::value val = web::json::value::object();
     val["timeO2Start"] = ModelBase::toJson(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
     val["timeTrgStart"] = ModelBase::toJson(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
@@ -118,7 +118,7 @@ int main(int argc, char const *argv[])
     val["timeTrgEnd"] = ModelBase::toJson(utility::datetime().from_string("2018-11-26T16:43:22.279Z"));
     val["runType"] = ModelBase::toJson(utility::string_t("my-run-type"));
     val["runQuality"] = ModelBase::toJson(utility::string_t("my-run-quality"));
-    val["activityId"] = ModelBase::toJson(utility::string_t("my-activity-id"));
+    val["activityId"] = ModelBase::toJson(utility::string_t("cpp-api"));
     val["nDetectors"] = ModelBase::toJson(int32_t(123));
     val["nFlps"] = ModelBase::toJson(int32_t(200));
     val["nEpns"] = ModelBase::toJson(int32_t(1000));
@@ -127,7 +127,6 @@ int main(int argc, char const *argv[])
     val["bytesReadOut"] = ModelBase::toJson(int32_t(6899397343));
     val["bytesTimeframeBuilder"] = ModelBase::toJson(int32_t(1235435));
     auto createRunDto = std::make_shared<model::CreateRunDto>();
-    std::cout << "PTR=" << ((void*) createRunDto.get()) << std::endl;
     createRunDto->fromJson(val);
     pplx::task<void> taskRunsPost = runsApi.runsPost(createRunDto);
     taskRunsPost.get();
@@ -152,11 +151,8 @@ int main(int argc, char const *argv[])
     );
     
     try {
-        // taskRunsGet.get();
-        std::cout << "Executing HTTP request..." << std::fflush;
         std::shared_ptr<Object> result = taskRunsGet.get();
-        std::cout << " done!" << std::endl;
-        std::cout << "Result:\n" << result << std::endl;
+        std::cout << "Runs:\n" << result->toJson() << std::endl;
     } catch(const std::exception& e) {
         std::cout << "runsGet() exception: " << e.what() << '\n';
     }

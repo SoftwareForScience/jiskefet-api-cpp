@@ -137,7 +137,7 @@ pplx::task<std::shared_ptr<Object>> SubsystemsApi::subsystemsGet()
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
@@ -260,7 +260,7 @@ pplx::task<std::shared_ptr<Object>> SubsystemsApi::subsystemsIdGet(int32_t id)
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {

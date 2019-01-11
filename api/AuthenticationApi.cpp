@@ -132,7 +132,7 @@ pplx::task<std::shared_ptr<Object>> AuthenticationApi::authGet(utility::string_t
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
@@ -246,7 +246,7 @@ pplx::task<std::shared_ptr<Object>> AuthenticationApi::profileGet()
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {

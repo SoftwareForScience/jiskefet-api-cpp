@@ -177,7 +177,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsGet(boost::optional<utility::st
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
@@ -300,7 +300,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(int32_t id)
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
@@ -444,7 +444,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<Lin
     })
     .then([=](utility::string_t response)
     {
-        std::shared_ptr<Object> result(nullptr);
+        auto result = std::make_shared<Object>();
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {

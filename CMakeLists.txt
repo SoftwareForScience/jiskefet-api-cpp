@@ -18,7 +18,7 @@ project(JiskefetApiCpp)
 #set(CMAKE_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
 #set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_DIR})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -fsanitize=address")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
