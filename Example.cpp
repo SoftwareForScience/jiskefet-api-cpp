@@ -13,47 +13,6 @@ namespace
         char* env = std::getenv(key.c_str());
         return (env == nullptr) ? std::string("") : std::string(env);
     }
-}
-
-namespace
-{
-    struct GetRunsParameters
-    {
-        boost::optional<utility::string_t> orderBy;
-        boost::optional<utility::string_t> orderDirection;
-        boost::optional<utility::string_t> pageSize;
-        boost::optional<utility::string_t> pageNumber;
-        boost::optional<utility::string_t> runNumber;
-        boost::optional<utility::datetime> startTimeO2Start;
-        boost::optional<utility::datetime> endTimeO2Start;
-        boost::optional<utility::datetime> startTimeTrgStart;
-        boost::optional<utility::datetime> endTimeTrgStart;
-        boost::optional<utility::datetime> startTimeTrgEnd;
-        boost::optional<utility::datetime> endTimeTrgEnd;
-        boost::optional<utility::datetime> startTimeO2End;
-        boost::optional<utility::datetime> endTimeO2End;
-        boost::optional<utility::string_t> activityId;
-        boost::optional<int32_t> runType;
-        boost::optional<int32_t> runQuality;
-    };
-
-    struct PostRunParameters
-    {
-        utility::datetime m_TimeO2Start;
-        utility::datetime m_TimeTrgStart;
-        utility::datetime m_TimeO2End;
-        utility::datetime m_TimeTrgEnd;
-        utility::string_t m_RunType;
-        utility::string_t m_RunQuality;
-        utility::string_t m_ActivityId;
-        int32_t m_NDetectors;
-        int32_t m_NFlps;
-        int32_t m_NEpns;
-        int32_t m_NTimeframes;
-        int32_t m_NSubtimeframes;
-        int32_t m_BytesReadOut;
-        int32_t m_BytesTimeframeBuilder;
-    };
 
     struct Run
     {
@@ -73,6 +32,7 @@ namespace
         int32_t bytesTimeframeBuilder;
     };
 
+    /// Example of how to convert the JSON object returned from RunsApi::runsGet() into regular C++ data structures.
     inline std::vector<Run> runsFromGetRunsResult(const std::shared_ptr<io::swagger::client::api::Object>& result) 
     {
         std::vector<Run> runs;
@@ -128,6 +88,7 @@ int main(int argc, char const *argv[])
     apiClient->setConfiguration(apiConfig);
     RunsApi runsApi(apiClient);
 
+    // Posts a run
     {
         std::cout << "Posting run\n";
         auto createRunDto = std::make_shared<model::CreateRunDto>();
@@ -153,6 +114,7 @@ int main(int argc, char const *argv[])
         }
     }
 
+    // Get runs
     {
         pplx::task<std::shared_ptr<Object>> taskRunsGet = runsApi.runsGet(
             boost::optional<utility::string_t>(), // orderBy,
@@ -178,7 +140,7 @@ int main(int argc, char const *argv[])
             std::cout << "Runs:\n" << result->toJson() << std::endl;
         } catch(const std::exception& e) {
             std::cout << "runsGet() exception: " << e.what() << '\n';
-        }   
+        }
 
         std::vector<Run> runs = runsFromGetRunsResult(result);
         std::cout << "Converted JSON:\n";

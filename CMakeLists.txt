@@ -33,7 +33,6 @@ find_package(OpenSSL 1.0.0 REQUIRED)
 find_library(CPPREST_LIB cpprest)
 
 # build and set path to cpp rest sdk
-#set(CPPREST_ROOT ${PROJECT_SOURCE_DIR}/../../../developmentTools/3rdParty/cpprest)
 set(CPPREST_INCLUDE_DIR ${CPPREST_ROOT}/include)
 set(CPPREST_LIBRARY_DIR ${CPPREST_ROOT}/lib)
 

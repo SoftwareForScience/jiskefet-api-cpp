@@ -2,13 +2,26 @@
 This is a C++ client API for Jiskefet based on the Swagger code generator
 
 
-## Setup
+# Setup
+## alibuild
+```
 (TO DO)
+```
+Notes:
+* May need to manually init the git submodule for cpprestsdk in the sw/SOURCES dir
+* Need to use the Wno-error hack in cpprestsdk alidist recipe
 
+## Manual setup
+### Fedora
+```
+dnf install cpprest-devel boost-devel openssl-devel 
+git clone https://github.com/PascalBoeschoten/jiskefet-api-cpp.git
+mkdir build; cd build
+cmake -DCPPREST_ROOT=/usr/include/cpprest ..
+```
 
-## Running the example code
+# Example code
 If your api is at `http://myhost.server.address/api`
-
 ```
 export JISKEFET_HOST=myhost.server.address
 export JISKEFET_PATH=api
@@ -18,9 +31,20 @@ export JISKEFET_API_TOKEN=jnk5vh43785ycj4gdvlvm84fg...
 
 
 # Dev notes
-## Generated code
-The generated code is unfortunately slightly buggy in the way it initializes shared pointers.
-Maybe the generated way worked in an older C++ standard, I used C++17.
+## Code generation
+The library code was generated using the Swagger editor: https://editor.swagger.io/ 
+    1. Copy & paste swagger.yaml contents into the editor
+    2. Under the "Generate Client" menu, select "cpprest"
+    3. Extract the archive
+
+At this point, it still needs some work however.
+
+The generated CMakeLists.txt is not up to scratch. 
+If you have to regenerate the code, it's recommended to update the custom CMakeLists.txt manually, rather than replacing it with the newly generated one.
+
+In addition, the generated code is buggy in the way it initializes shared_ptrs.
+It "wants" to initialize the shared_ptr with a default-initialized Object, but actually ends up with a null-initialized shared_ptr.
+Maybe the generated way worked in an older C++ standard, but in C++17 it's broken.
 To fix it, do a find and replace.
 * From:
 ```
