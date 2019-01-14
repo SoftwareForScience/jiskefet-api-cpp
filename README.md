@@ -5,11 +5,20 @@ This is a C++ client API for Jiskefet based on the Swagger code generator
 # Setup
 ## alibuild
 ```
-(TO DO)
+mkdir alice; cd alice
+git clone https://github.com/PascalBoeschoten/alidist.git
+aliBuild build Jiskefet-Api-Cpp --defaults=o2
+cd sw/SOURCES/cpprestsdk/master/master/
+git submodule update --init
+cd -
+aliBuild build Jiskefet-Api-Cpp --defaults=o2
 ```
-Notes:
-* May need to manually init the git submodule for cpprestsdk in the sw/SOURCES dir
-* Need to use the Wno-error hack in cpprestsdk alidist recipe
+To use:
+```
+alienv enter Jiskefet-Api-Cpp/latest-o2
+which jiskefet-api-cpp
+```
+
 
 ## Manual setup
 ### Fedora
