@@ -43,9 +43,19 @@ endif( NOT DEFINED CPPREST_ROOT )
 include_directories(${PROJECT_SOURCE_DIR} api model ${CPPREST_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})
 
 #SUPPORTING FILES
-set(SUPPORTING_FILES  "ApiClient" "ApiConfiguration" "ApiException" "HttpContent" "IHttpBody" "JsonBody" "ModelBase" "MultipartFormData" "Object")
+set(SUPPORTING_FILES 
+    "ApiClient"
+    "ApiConfiguration"
+    "ApiException"
+    "HttpContent"
+    "IHttpBody"
+    "JsonBody"
+    "ModelBase"
+    "MultipartFormData"
+    "Object")
+
 #SOURCE FILES
-file(GLOB SOURCE_FILES  "api/*"  "model/*")
+file(GLOB SOURCE_FILES "api/*"  "model/*" "jiskefet/*")
 
 add_library(${PROJECT_NAME} ${SUPPORTING_FILES} ${SOURCE_FILES})
 
@@ -61,6 +71,7 @@ install(FILES
     ApiConfiguration.h
     HttpContent.h
     IHttpBody.h
+    Jiskefet.h
     JsonBody.h
     ModelBase.h
     MultipartFormData.h

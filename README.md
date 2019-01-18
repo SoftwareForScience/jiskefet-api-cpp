@@ -30,18 +30,18 @@ cmake -DCPPREST_ROOT=/usr/include/cpprest ..
 ```
 
 # Example code
-If your api is at `http://myhost.server.address/api`
+If your api is at `http://myhost.server.address/api`:
 ```
-export JISKEFET_HOST=myhost.server.address
-export JISKEFET_PATH=api
+export JISKEFET_URL=http://myhost.server.address/api
 export JISKEFET_API_TOKEN=jnk5vh43785ycj4gdvlvm84fg...
 ./jiskefet-api-cpp-example
 ```
-
+Note: don't include the "Bearer " part of the token, it's added automatically.
 
 # Dev notes
 ## Code generation
-The library code was generated using the Swagger editor: https://editor.swagger.io/ 
+The library code was generated using the Swagger editor (https://editor.swagger.io/): 
+
     1. Copy & paste swagger.yaml contents into the editor
     2. Under the "Generate Client" menu, select "cpprest"
     3. Extract the archive
