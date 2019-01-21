@@ -88,7 +88,8 @@ void JiskefetApi::createRun(const CreateRunParameters& params)
     dto->setNSubtimeframes(params.nSubtimeframes);
     dto->setBytesReadOut(params.bytesReadOut);
     dto->setBytesTimeframeBuilder(params.bytesTimeframeBuilder);
-    runsApi.runsPost(dto).get();
+    std::shared_ptr<io::swagger::client::model::Object> result = runsApi.runsPost(dto).get();
+    // TODO check if result is OK
 }
 
 std::vector<Run> JiskefetApi::getRuns(const GetRunsParameters& params)
@@ -162,7 +163,8 @@ void JiskefetApi::createLog(const CreateLogParameters& params)
         [](int32_t x){return std::to_string(x);});
     dto->setRuns(runIds);
 
-    api.logsPost(dto).get();
+    std::shared_ptr<io::swagger::client::model::Object> result = api.logsPost(dto).get();
+    // TODO check if result is OK and return log ID
 }
 
 std::vector<Log> JiskefetApi::getLogs(const GetLogsParameters& params)

@@ -28,6 +28,8 @@
         responses:
           '201':
             description: ''
+            schema:
+              type: object
         tags:
           - runs
         security:
@@ -200,6 +202,8 @@
         responses:
           '201':
             description: ''
+            schema:
+              type: object
         tags:
           - logs
         security:
