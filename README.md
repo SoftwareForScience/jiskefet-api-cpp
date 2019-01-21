@@ -2,6 +2,15 @@
 This is a C++ client API for Jiskefet based on the Swagger code generator
 
 
+# Generated code
+A lot of the code in this repository is generated. The exceptions are:
+* The example code of `Example.cpp`
+* Code in the `jiskefet` subdirectory. 
+  This is a convenient wrapper around the generated code, and it's what users are supposed to use.
+  It is currently focused on providing the basic necessities (i.e. posting/getting runs), 
+  so it does not yet cover all of the functionality of the REST API.
+
+
 # Setup
 ## alibuild
 ```

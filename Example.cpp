@@ -2,18 +2,20 @@
 #include <iostream>
 #include "ApiClient.h"
 #include "api/RunsApi.h"
-#include "boost/none.hpp"
 #include "cpprest/oauth2.h"
-#include "pplx/threadpool.h"
 #include "jiskefet/JiskefetFactory.h"
+
+#include <boost/date_time.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 
 namespace 
 {
-    std::string getEnvString(const std::string& key)
-    {
-        char* env = std::getenv(key.c_str());
-        return (env == nullptr) ? std::string("") : std::string(env);
-    }
+std::string getEnvString(const std::string& key)
+{
+    char* env = std::getenv(key.c_str());
+    return (env == nullptr) ? std::string("") : std::string(env);
+}
 }
 
 int main(int argc, char const *argv[])
@@ -27,35 +29,42 @@ int main(int argc, char const *argv[])
     auto api = jiskefet::getApiInstance(url, apiToken);
 
     // Post run
-    jiskefet::PostRunArguments postRunArguments;
-    postRunArguments.timeO2Start = utility::datetime().from_string("2018-11-26T16:43:22.279Z");
-    postRunArguments.timeO2Start = utility::datetime().from_string("2018-11-26T16:43:22.279Z");
-    postRunArguments.timeTrgStart = utility::datetime().from_string("2018-11-26T16:43:22.279Z");
-    postRunArguments.timeO2End = utility::datetime().from_string("2018-11-26T16:43:22.279Z");
-    postRunArguments.timeTrgEnd = utility::datetime().from_string("2018-11-26T16:43:22.279Z");
-    postRunArguments.runType = "my-run-type";
-    postRunArguments.runQuality = "my-run-quality";
-    postRunArguments.activityId = "cpp-api";
-    postRunArguments.nDetectors = 123;
-    postRunArguments.nFlps = 200;
-    postRunArguments.nEpns = 1000;
-    postRunArguments.nTimeframes = 12312;
-    postRunArguments.nSubtimeframes = 12312312;
-    postRunArguments.bytesReadOut = 1024*1024*1024;
-    postRunArguments.bytesTimeframeBuilder = 512*1024*1024;
-    api->postRun(postRunArguments);
+    {
+        auto now = boost::posix_time::microsec_clock::universal_time();
+        auto sometime = boost::posix_time::from_iso_extended_string("2007-03-01T13:00:00");
+
+        jiskefet::CreateRunParameters params;
+        params.timeO2Start = sometime;
+        params.timeTrgStart = sometime;
+        params.timeO2End = now;
+        params.timeTrgEnd = now;
+        params.runType = "my-run-type";
+        params.runQuality = "my-run-quality";
+        params.activityId = "cpp-api";
+        params.nDetectors = 123;
+        params.nFlps = 200;
+        params.nEpns = 1000;
+        params.nTimeframes = 1231;
+        params.nSubtimeframes = 12312;
+        params.bytesReadOut = 1024*1024;
+        params.bytesTimeframeBuilder = 512*1024;
+        api->createRun(params);
+    }
 
     // Get run
-    jiskefet::GetRunsArguments getRunsArguments;
-    getRunsArguments.pageSize = "25";
-    std::vector<jiskefet::Run> runs = api->getRuns(getRunsArguments);
-    for (const auto& run : runs) {
-        std::cout << "  {\n"
-        << "    timeO2Start : " << run.timeO2Start.to_string() << '\n'
-        << "    runType : " << run.runType << '\n'
-        << "    nFlps : " << run.nFlps << '\n'
-        << "    bytesReadOut : " << run.bytesReadOut << '\n'
-        << "  },\n";
+    {
+        jiskefet::GetRunsParameters params;
+        params.pageSize = 3;
+        params.orderDirection = jiskefet::OrderDirection::DESC;
+        std::vector<jiskefet::Run> runs = api->getRuns(params);
+        for (const auto& run : runs) {
+            std::cout << "  {\n"
+            << "    timeO2Start : " << boost::posix_time::to_iso_extended_string(run.timeO2Start) << '\n'
+            << "    runType : " << run.runType << '\n'
+            << "    nFlps : " << run.nFlps << '\n'
+            << "    bytesReadOut : " << run.bytesReadOut << '\n'
+            << "  },\n";
+        }
     }
 
     return 0;
