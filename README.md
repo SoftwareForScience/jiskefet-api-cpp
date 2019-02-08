@@ -15,7 +15,7 @@ A lot of the code in this repository is generated. The exceptions are:
 ## alibuild
 ```
 mkdir alice; cd alice
-git clone https://github.com/PascalBoeschoten/alidist.git
+git clone https://github.com/SoftwareForScience/alidist.git
 aliBuild build Jiskefet-Api-Cpp --defaults=o2
 cd sw/SOURCES/cpprestsdk/master/master/
 git submodule update --init
