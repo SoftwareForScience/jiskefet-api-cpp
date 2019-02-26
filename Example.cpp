@@ -59,6 +59,7 @@ int main(int argc, char const *argv[])
         std::vector<jiskefet::Run> runs = api->getRuns(params);
         for (const auto& run : runs) {
             std::cout << "  {\n"
+            << "    runNumber : " << run.runNumber << '\n'
             << "    timeO2Start : " << boost::posix_time::to_iso_extended_string(run.timeO2Start) << '\n'
             << "    runType : " << run.runType << '\n'
             << "    nFlps : " << run.nFlps << '\n'

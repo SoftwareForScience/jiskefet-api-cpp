@@ -9,6 +9,7 @@ namespace jiskefet
 {
 struct Run
 {
+    int64_t runNumber;
     boost::posix_time::ptime timeO2Start;
     boost::posix_time::ptime timeTrgStart;
     boost::posix_time::ptime timeO2End;

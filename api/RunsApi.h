@@ -23,6 +23,7 @@
 #include "../ApiClient.h"
 
 #include "CreateRunDto.h"
+#include "CreateRunResultDto.h"
 #include "LinkLogToRunDto.h"
 #include "Object.h"
 #include <cpprest/details/basic_types.h>
@@ -110,7 +111,7 @@ public:
     /// 
     /// </remarks>
     /// <param name="createRunDto"></param>
-    pplx::task<std::shared_ptr<Object>> runsPost(
+    pplx::task<std::shared_ptr<CreateRunResultDto>> runsPost(
         std::shared_ptr<CreateRunDto> createRunDto
     );
 

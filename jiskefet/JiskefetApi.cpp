@@ -88,7 +88,7 @@ void JiskefetApi::createRun(const CreateRunParameters& params)
     dto->setNSubtimeframes(params.nSubtimeframes);
     dto->setBytesReadOut(params.bytesReadOut);
     dto->setBytesTimeframeBuilder(params.bytesTimeframeBuilder);
-    std::shared_ptr<io::swagger::client::model::Object> result = runsApi.runsPost(dto).get();
+    std::shared_ptr<io::swagger::client::model::CreateRunResultDto> result = runsApi.runsPost(dto).get();
     // TODO check if result is OK
 }
 
@@ -123,6 +123,7 @@ std::vector<Run> JiskefetApi::getRuns(const GetRunsParameters& params)
     for (const auto& item : runsJson) {
         const auto& runJson = item.as_object();
         Run run;
+        run.runNumber = runJson.at("runNumber").as_number().to_int64();
         run.timeO2Start = ptimeFromString(runJson.at("timeO2Start").as_string());
         run.timeTrgStart = ptimeFromString(runJson.at("timeTrgStart").as_string());
         run.timeO2End = ptimeFromString(runJson.at("timeO2End").as_string());

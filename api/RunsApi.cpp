@@ -489,7 +489,7 @@ pplx::task<std::shared_ptr<Object>> RunsApi::runsIdLogsPatch(std::shared_ptr<Lin
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> RunsApi::runsPost(std::shared_ptr<CreateRunDto> createRunDto)
+pplx::task<std::shared_ptr<CreateRunResultDto>> RunsApi::runsPost(std::shared_ptr<CreateRunDto> createRunDto)
 {
 
     // verify the required parameter 'createRunDto' is set
@@ -611,7 +611,7 @@ pplx::task<std::shared_ptr<Object>> RunsApi::runsPost(std::shared_ptr<CreateRunD
     })
     .then([=](utility::string_t response)
     {
-        auto result = std::make_shared<Object>();
+        std::shared_ptr<CreateRunResultDto> result(new CreateRunResultDto());
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {

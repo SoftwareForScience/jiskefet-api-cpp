@@ -90,8 +90,8 @@ install(FILES
     model/CreateAttachmentDto.h
     model/CreateLogDto.h
     model/CreateRunDto.h
+    model/CreateRunResultDto.h
     model/CreateSubSystemPermissionDto.h
-    model/Date.h
     model/LinkLogToRunDto.h
     model/LinkRunToLogDto.h
     model/SubSystem.h
