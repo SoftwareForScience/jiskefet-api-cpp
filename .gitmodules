@@ -1,0 +1,3 @@
+[submodule "jiskefet-openapi-spec"]
+	path = jiskefet-openapi-spec
+	url = https://github.com/SoftwareForScience/jiskefet-openapi-spec
