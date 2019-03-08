@@ -30,17 +30,16 @@ message("A ${CMAKE_BUILD_TYPE} build configuration is detected")
 # Update require components as necessary
 find_package(Boost 1.45.0 REQUIRED COMPONENTS thread system regex date_time program_options filesystem)
 find_package(OpenSSL 1.0.0 REQUIRED)
-find_library(CPPREST_LIB cpprest)
+find_library(CPPREST_LIBRARIES cpprest HINTS ${CPPREST_LIB})
 
 # build and set path to cpp rest sdk
 set(CPPREST_INCLUDE_DIR ${CPPREST_ROOT}/include)
-set(CPPREST_LIBRARY_DIR ${CPPREST_ROOT}/lib)
 
 if( NOT DEFINED CPPREST_ROOT )
     message( FATAL_ERROR "Failed to find cpprest SDK (or missing components). Double check that \"CPPREST_ROOT\" is properly set")
 endif( NOT DEFINED CPPREST_ROOT )
 
-include_directories(${PROJECT_SOURCE_DIR} api model ${CPPREST_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})
+include_directories(${PROJECT_SOURCE_DIR} api model ${CPPREST_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
 
 #SUPPORTING FILES
 set(SUPPORTING_FILES 
@@ -60,7 +59,7 @@ file(GLOB SOURCE_FILES "api/*"  "model/*" "jiskefet/*")
 add_library(${PROJECT_NAME} ${SUPPORTING_FILES} ${SOURCE_FILES})
 
 add_executable(jiskefet-api-cpp-example Example.cpp)
-target_link_libraries(jiskefet-api-cpp-example ${PROJECT_NAME} ${CPPREST_LIB} ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} pthread)
+target_link_libraries(jiskefet-api-cpp-example ${PROJECT_NAME} ${CPPREST_LIBRARIES} ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} pthread)
 
 install(TARGETS jiskefet-api-cpp-example JiskefetApiCpp
     RUNTIME DESTINATION bin
@@ -71,7 +70,6 @@ install(FILES
     ApiConfiguration.h
     HttpContent.h
     IHttpBody.h
-    Jiskefet.h
     JsonBody.h
     ModelBase.h
     MultipartFormData.h
