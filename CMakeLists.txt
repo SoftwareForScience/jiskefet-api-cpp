@@ -30,7 +30,7 @@ message("A ${CMAKE_BUILD_TYPE} build configuration is detected")
 # Update require components as necessary
 find_package(Boost 1.45.0 REQUIRED COMPONENTS thread system regex date_time program_options filesystem)
 find_package(OpenSSL 1.0.0 REQUIRED)
-find_library(CPPREST_LIBRARIES cpprest HINTS ${CPPREST_LIB})
+find_library(CPPREST_LIBRARIES cpprest PATHS ${CPPREST_LIB} PATH_SUFFIXES lib lib64)
 
 # build and set path to cpp rest sdk
 set(CPPREST_INCLUDE_DIR ${CPPREST_ROOT}/include)
