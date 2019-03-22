@@ -51,7 +51,7 @@ public:
     /// <param name="id"></param>
     pplx::task<std::shared_ptr<Object>> flpNameRunsIdGet(
         utility::string_t name,
-        double id
+        int64_t id
     );
     /// <summary>
     /// 
@@ -65,7 +65,7 @@ public:
     pplx::task<std::shared_ptr<Object>> flpNameRunsIdPatch(
         std::shared_ptr<PatchFlpDto> patchFlpDto,
         utility::string_t name,
-        double id
+        int64_t id
     );
     /// <summary>
     /// 

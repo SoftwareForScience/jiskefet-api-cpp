@@ -36,7 +36,7 @@ FlpApi::~FlpApi()
 {
 }
 
-pplx::task<std::shared_ptr<Object>> FlpApi::flpNameRunsIdGet(utility::string_t name, double id)
+pplx::task<std::shared_ptr<Object>> FlpApi::flpNameRunsIdGet(utility::string_t name, int64_t id)
 {
 
 
@@ -160,7 +160,7 @@ boost::replace_all(path, utility::conversions::to_string_t("{") + utility::conve
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> FlpApi::flpNameRunsIdPatch(std::shared_ptr<PatchFlpDto> patchFlpDto, utility::string_t name, double id)
+pplx::task<std::shared_ptr<Object>> FlpApi::flpNameRunsIdPatch(std::shared_ptr<PatchFlpDto> patchFlpDto, utility::string_t name, int64_t id)
 {
 
     // verify the required parameter 'patchFlpDto' is set

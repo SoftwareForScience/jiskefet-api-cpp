@@ -47,7 +47,7 @@ public:
     /// </remarks>
     /// <param name="id"></param>
     pplx::task<std::shared_ptr<Object>> attachmentsIdLogsGet(
-        double id
+        int64_t id
     );
     /// <summary>
     /// 

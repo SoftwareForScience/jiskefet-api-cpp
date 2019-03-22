@@ -79,7 +79,7 @@ public:
     /// </remarks>
     /// <param name="id"></param>
     pplx::task<std::shared_ptr<Object>> logsIdGet(
-        double id
+        int64_t id
     );
     /// <summary>
     /// 
@@ -91,7 +91,7 @@ public:
     /// <param name="id"></param>
     pplx::task<std::shared_ptr<Object>> logsIdRunsPatch(
         std::shared_ptr<LinkRunToLogDto> linkRunToLogDto,
-        double id
+        int64_t id
     );
     /// <summary>
     /// 

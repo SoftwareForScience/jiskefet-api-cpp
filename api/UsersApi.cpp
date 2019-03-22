@@ -36,7 +36,7 @@ UsersApi::~UsersApi()
 {
 }
 
-pplx::task<std::shared_ptr<Object>> UsersApi::usersIdGet(double id)
+pplx::task<std::shared_ptr<Object>> UsersApi::usersIdGet(int64_t id)
 {
 
 
@@ -159,7 +159,7 @@ pplx::task<std::shared_ptr<Object>> UsersApi::usersIdGet(double id)
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> UsersApi::usersIdLogsGet(double id, boost::optional<utility::string_t> orderBy, boost::optional<utility::string_t> orderDirection, boost::optional<utility::string_t> pageSize, boost::optional<utility::string_t> pageNumber, boost::optional<utility::string_t> logId, boost::optional<utility::string_t> searchterm, boost::optional<utility::string_t> subtype, boost::optional<utility::string_t> origin, boost::optional<utility::string_t> startCreationTime, boost::optional<utility::string_t> endCreationTime, boost::optional<utility::string_t> user)
+pplx::task<std::shared_ptr<Object>> UsersApi::usersIdLogsGet(int64_t id, boost::optional<utility::string_t> orderBy, boost::optional<utility::string_t> orderDirection, boost::optional<utility::string_t> pageSize, boost::optional<utility::string_t> pageNumber, boost::optional<utility::string_t> logId, boost::optional<utility::string_t> searchterm, boost::optional<utility::string_t> subtype, boost::optional<utility::string_t> origin, boost::optional<utility::string_t> startCreationTime, boost::optional<utility::string_t> endCreationTime, boost::optional<utility::string_t> user)
 {
 
 
@@ -326,7 +326,7 @@ pplx::task<std::shared_ptr<Object>> UsersApi::usersIdLogsGet(double id, boost::o
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> UsersApi::usersIdTokensGet(double id)
+pplx::task<std::shared_ptr<Object>> UsersApi::usersIdTokensGet(int64_t id)
 {
 
 
@@ -449,7 +449,7 @@ pplx::task<std::shared_ptr<Object>> UsersApi::usersIdTokensGet(double id)
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> UsersApi::usersIdTokensPost(double id, std::shared_ptr<CreateSubSystemPermissionDto> createSubSystemPermissionDto)
+pplx::task<std::shared_ptr<Object>> UsersApi::usersIdTokensPost(int64_t id, std::shared_ptr<CreateSubSystemPermissionDto> createSubSystemPermissionDto)
 {
 
     // verify the required parameter 'createSubSystemPermissionDto' is set

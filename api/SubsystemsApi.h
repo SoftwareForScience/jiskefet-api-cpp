@@ -54,7 +54,7 @@ public:
     /// </remarks>
     /// <param name="id"></param>
     pplx::task<std::shared_ptr<Object>> subsystemsIdGet(
-        double id
+        int64_t id
     );
 
 protected:

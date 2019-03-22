@@ -202,7 +202,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsGet(boost::optional<utility::st
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(double id)
+pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(int64_t id)
 {
 
 
@@ -325,7 +325,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(double id)
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<LinkRunToLogDto> linkRunToLogDto, double id)
+pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<LinkRunToLogDto> linkRunToLogDto, int64_t id)
 {
 
     // verify the required parameter 'linkRunToLogDto' is set

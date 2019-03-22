@@ -222,7 +222,7 @@ pplx::task<std::shared_ptr<Object>> RunsApi::runsGet(boost::optional<utility::st
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> RunsApi::runsIdGet(double id)
+pplx::task<std::shared_ptr<Object>> RunsApi::runsIdGet(int64_t id)
 {
 
 
@@ -345,7 +345,7 @@ pplx::task<std::shared_ptr<Object>> RunsApi::runsIdGet(double id)
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> RunsApi::runsIdLogsPatch(std::shared_ptr<LinkLogToRunDto> linkLogToRunDto, double id)
+pplx::task<std::shared_ptr<Object>> RunsApi::runsIdLogsPatch(std::shared_ptr<LinkLogToRunDto> linkLogToRunDto, int64_t id)
 {
 
     // verify the required parameter 'linkLogToRunDto' is set
@@ -489,7 +489,7 @@ pplx::task<std::shared_ptr<Object>> RunsApi::runsIdLogsPatch(std::shared_ptr<Lin
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> RunsApi::runsIdPatch(std::shared_ptr<PatchRunDto> patchRunDto, double id)
+pplx::task<std::shared_ptr<Object>> RunsApi::runsIdPatch(std::shared_ptr<PatchRunDto> patchRunDto, int64_t id)
 {
 
     // verify the required parameter 'patchRunDto' is set

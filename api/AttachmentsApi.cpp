@@ -36,7 +36,7 @@ AttachmentsApi::~AttachmentsApi()
 {
 }
 
-pplx::task<std::shared_ptr<Object>> AttachmentsApi::attachmentsIdLogsGet(double id)
+pplx::task<std::shared_ptr<Object>> AttachmentsApi::attachmentsIdLogsGet(int64_t id)
 {
 
 

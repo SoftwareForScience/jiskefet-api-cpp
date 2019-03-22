@@ -26,25 +26,33 @@ int main(int argc, char const *argv[])
 
     auto api = jiskefet::getApiInstance(url, apiToken);
 
+    
     // Start & end run, with FLPs
     {
-        const int64_t runNumber = rand()*1000.0;
+        srand (time(NULL));
+        const int64_t runNumber = rand() % 1000;
         auto now = boost::posix_time::microsec_clock::universal_time();
+        std::cout << "Starting run\n";
         api->runStart(runNumber, now, now, "cpp-api", RunType::TECHNICAL, 123, 200, 100);
+        std::cout << "Adding FLPs\n";
         api->flpAdd(runNumber, "flp-1", "localhost");
         api->flpAdd(runNumber, "flp-2", "localhost");
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
+        std::cout << "Updating FLPs\n";
         api->flpUpdateCounters(runNumber, "flp-1", 123, 123408, 5834, 9192);
         api->flpUpdateCounters(runNumber, "flp-2", 13, 318, 23, 952);
         std::this_thread::sleep_for(std::chrono::seconds(1));
         
+        std::cout << "Updating FLPs\n";
         api->flpUpdateCounters(runNumber, "flp-1", 234, 323408, 6834, 9292);
         
+        std::cout << "Ending run\n";
         now = boost::posix_time::microsec_clock::universal_time();
         api->runEnd(runNumber, now, now, RunQuality::UNKNOWN);
     }
 
+    /*
     // Get run
     {
         jiskefet::GetRunsParameters params;
@@ -60,7 +68,7 @@ int main(int argc, char const *argv[])
             << "    bytesReadOut : " << run.bytesReadOut << '\n'
             << "  },\n";
         }
-    }
+    }*/
 
     return 0;
 }

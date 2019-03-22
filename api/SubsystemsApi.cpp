@@ -140,7 +140,7 @@ pplx::task<void> SubsystemsApi::subsystemsGet()
         return void();
     });
 }
-pplx::task<std::shared_ptr<Object>> SubsystemsApi::subsystemsIdGet(double id)
+pplx::task<std::shared_ptr<Object>> SubsystemsApi::subsystemsIdGet(int64_t id)
 {
 
 

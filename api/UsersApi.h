@@ -48,7 +48,7 @@ public:
     /// </remarks>
     /// <param name="id"></param>
     pplx::task<std::shared_ptr<Object>> usersIdGet(
-        double id
+        int64_t id
     );
     /// <summary>
     /// 
@@ -69,7 +69,7 @@ public:
     /// <param name="endCreationTime">The upper bound of the creation time filter range. (optional)</param>
     /// <param name="user">The author of the log.. (optional)</param>
     pplx::task<std::shared_ptr<Object>> usersIdLogsGet(
-        double id,
+        int64_t id,
         boost::optional<utility::string_t> orderBy,
         boost::optional<utility::string_t> orderDirection,
         boost::optional<utility::string_t> pageSize,
@@ -90,7 +90,7 @@ public:
     /// </remarks>
     /// <param name="id"></param>
     pplx::task<std::shared_ptr<Object>> usersIdTokensGet(
-        double id
+        int64_t id
     );
     /// <summary>
     /// 
@@ -101,7 +101,7 @@ public:
     /// <param name="id"></param>
     /// <param name="createSubSystemPermissionDto"></param>
     pplx::task<std::shared_ptr<Object>> usersIdTokensPost(
-        double id,
+        int64_t id,
         std::shared_ptr<CreateSubSystemPermissionDto> createSubSystemPermissionDto
     );
 

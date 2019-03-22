@@ -101,3 +101,8 @@ std::shared_ptr<Object> result(nullptr);
 ```
 auto result = std::make_shared<Object>();
 ```
+
+For example with
+```
+find . -exec sed -i -e 's/std::shared_ptr<Object> result(nullptr);/auto result = std::make_shared<Object>();/g' {} \;
+```
