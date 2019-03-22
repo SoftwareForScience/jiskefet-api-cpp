@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <thread>
 #include "jiskefet/JiskefetFactory.h"
 
 #include <boost/date_time.hpp>
@@ -25,7 +26,7 @@ int main(int argc, char const *argv[])
 
     auto api = jiskefet::getApiInstance(url, apiToken);
 
-    // Post run
+    // (Old API) Post run
     {
         auto now = boost::posix_time::microsec_clock::universal_time();
         auto sometime = boost::posix_time::from_iso_extended_string("2007-03-01T13:00:00");
@@ -46,6 +47,25 @@ int main(int argc, char const *argv[])
         params.bytesReadOut = 1024*1024;
         params.bytesTimeframeBuilder = 512*1024;
         api->createRun(params);
+    }
+
+    // (New API) Start & end run, with FLPs
+    {
+        const int64_t runNumber = 1;
+        auto now = boost::posix_time::microsec_clock::universal_time();
+        api->runStart(runNumber, now, now, "cpp-api", RunType::TECHNICAL, 123, 200, 100);
+        api->flpAdd(runNumber, "flp-1", "localhost");
+        api->flpAdd(runNumber, "flp-2", "localhost");
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        api->flpUpdateCounters(runNumber, "flp-1", 123, 123408, 5834, 9192);
+        api->flpUpdateCounters(runNumber, "flp-2", 13, 318, 23, 952);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        
+        api->flpUpdateCounters(runNumber, "flp-1", 234, 323408, 6834, 9292);
+        
+        now = boost::posix_time::microsec_clock::universal_time();
+        api->runEnd(runNumber, now, now, RunQuality::UNKNOWN);
     }
 
     // Get run
