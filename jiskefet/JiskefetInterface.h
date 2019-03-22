@@ -58,10 +58,6 @@ class JiskefetInterface {
     virtual void flpUpdateCounters(int64_t runNumber, std::string flpName, int64_t nSubtimeframes, int64_t nEquipmentBytes,
       int64_t nRecordingBytes, int64_t nFairMqBytes) = 0;
 
-    /// Creates a run
-    /// @deprecated Use runStart() and runEnd()
-    virtual void createRun(const CreateRunParameters& parameters) = 0;
-    
     virtual std::vector<Run> getRuns(const GetRunsParameters& parameters) = 0;
     virtual void createLog(const CreateLogParameters& parameters) = 0;
     virtual std::vector<Log> getLogs(const GetLogsParameters& parameters) = 0;

@@ -11,18 +11,17 @@
  */
 
 /*
- * OverviewApi.h
+ * SettingApi.h
  *
  * 
  */
 
-#ifndef IO_SWAGGER_CLIENT_API_OverviewApi_H_
-#define IO_SWAGGER_CLIENT_API_OverviewApi_H_
+#ifndef IO_SWAGGER_CLIENT_API_SettingApi_H_
+#define IO_SWAGGER_CLIENT_API_SettingApi_H_
 
 
 #include "../ApiClient.h"
 
-#include <cpprest/details/basic_types.h>
 
 #include <boost/optional.hpp>
 
@@ -33,20 +32,18 @@ namespace api {
 
 using namespace io::swagger::client::model;
 
-class  OverviewApi
+class  SettingApi
 {
 public:
-    OverviewApi( std::shared_ptr<ApiClient> apiClient );
-    virtual ~OverviewApi();
+    SettingApi( std::shared_ptr<ApiClient> apiClient );
+    virtual ~SettingApi();
     /// <summary>
     /// 
     /// </summary>
     /// <remarks>
     /// 
     /// </remarks>
-    /// <param name="timeRange">In which time range the logs of eachsubsystem should be posted (optional)</param>
-    pplx::task<void> overviewGet(
-        boost::optional<utility::string_t> timeRange
+    pplx::task<void> settingGet(
     );
 
 protected:
@@ -58,5 +55,5 @@ protected:
 }
 }
 
-#endif /* IO_SWAGGER_CLIENT_API_OverviewApi_H_ */
+#endif /* IO_SWAGGER_CLIENT_API_SettingApi_H_ */
 

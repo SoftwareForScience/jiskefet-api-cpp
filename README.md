@@ -49,15 +49,44 @@ Note: don't include the "Bearer " part of the token, it's added automatically.
 
 # Dev notes
 ## Code generation
-The library code was generated using the Swagger editor (https://editor.swagger.io/): 
+Code can be generated using the online editor or locally. After generation, you'll need to do some additional work
+### Local
+OpenAPI tools (not using this currently)
+```
+docker pull openapitools/openapi-generator-cli
+git clone https://github.com/SoftwareForScience/jiskefet-openapi-spec
+cd jiskefet-openapi-spec
+mkdir -p gen/cpp-restsdk
+docker run --rm -v ${PWD}:/local:Z \
+    openapitools/openapi-generator-cli generate \
+    -i /local/openapi-spec.yaml \
+    -g cpp-restsdk \
+    -o /local/gen/cpp-restsdk
+```
+Swagger tools (local not working, see [Online]
+```
+docker pull swaggerapi/swagger-codegen-cli
 
-    1. Copy & paste swagger.yaml contents into the editor
-    2. Under the "Generate Client" menu, select "cpprest"
-    3. Extract the archive
+git clone https://github.com/SoftwareForScience/jiskefet-openapi-spec
+cd jiskefet-openapi-spec
+mkdir gen-cpprest
+docker run --rm \
+    -v ${PWD}:/local:Z \
+    swaggerapi/swagger-codegen-cli generate \
+    -i /local/openapi-spec.yaml \
+    -l cpprest \
+    -o /local/gen-cpprest
+```
+### Online
+1. Copy & paste openapi-spec.yaml contents into the editor at https://editor.swagger.io/
+2. Under the "Generate Client" menu, select "cpprest"
+3. Extract the archive
 
+
+### Additional work
 At this point, it still needs some work however.
 
-The generated CMakeLists.txt is not up to scratch. 
+Do not use the generated CMakeLists.txt, manually update the existing one.
 If you have to regenerate the code, it's recommended to update the custom CMakeLists.txt manually, rather than replacing it with the newly generated one.
 
 In addition, the generated code is buggy in the way it initializes shared_ptrs.
@@ -72,4 +101,3 @@ std::shared_ptr<Object> result(nullptr);
 ```
 auto result = std::make_shared<Object>();
 ```
-

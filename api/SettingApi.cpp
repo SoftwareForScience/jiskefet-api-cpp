@@ -11,7 +11,7 @@
  */
 
 
-#include "OverviewApi.h"
+#include "SettingApi.h"
 #include "IHttpBody.h"
 #include "JsonBody.h"
 #include "MultipartFormData.h"
@@ -27,21 +27,21 @@ namespace api {
 
 using namespace io::swagger::client::model;
 
-OverviewApi::OverviewApi( std::shared_ptr<ApiClient> apiClient )
+SettingApi::SettingApi( std::shared_ptr<ApiClient> apiClient )
     : m_ApiClient(apiClient)
 {
 }
 
-OverviewApi::~OverviewApi()
+SettingApi::~SettingApi()
 {
 }
 
-pplx::task<void> OverviewApi::overviewGet(boost::optional<utility::string_t> timeRange)
+pplx::task<void> SettingApi::settingGet()
 {
 
 
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
-    utility::string_t path = utility::conversions::to_string_t("/overview");
+    utility::string_t path = utility::conversions::to_string_t("/setting");
     
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
@@ -70,7 +70,7 @@ pplx::task<void> OverviewApi::overviewGet(boost::optional<utility::string_t> tim
     }
     else
     {
-        throw ApiException(400, utility::conversions::to_string_t("OverviewApi->overviewGet does not produce any supported media type"));
+        throw ApiException(400, utility::conversions::to_string_t("SettingApi->settingGet does not produce any supported media type"));
     }
 
     headerParams[utility::conversions::to_string_t("Accept")] = responseHttpContentType;
@@ -78,10 +78,6 @@ pplx::task<void> OverviewApi::overviewGet(boost::optional<utility::string_t> tim
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     consumeHttpContentTypes.insert( utility::conversions::to_string_t("application/json") );
 
-    if (timeRange)
-    {
-        queryParams[utility::conversions::to_string_t("timeRange")] = ApiClient::parameterToString(*timeRange);
-    }
 
     std::shared_ptr<IHttpBody> httpBody;
     utility::string_t requestHttpContentType;
@@ -98,17 +94,9 @@ pplx::task<void> OverviewApi::overviewGet(boost::optional<utility::string_t> tim
     }
     else
     {
-        throw ApiException(415, utility::conversions::to_string_t("OverviewApi->overviewGet does not consume any supported media type"));
+        throw ApiException(415, utility::conversions::to_string_t("SettingApi->settingGet does not consume any supported media type"));
     }
 
-    // authentication (bearer) required
-    {
-        utility::string_t apiKey = apiConfiguration->getApiKey(utility::conversions::to_string_t("Authorization"));
-        if ( apiKey.size() > 0 )
-        {
-            headerParams[utility::conversions::to_string_t("Authorization")] = apiKey;
-        }
-    }
 
     return m_ApiClient->callApi(path, utility::conversions::to_string_t("GET"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
@@ -121,7 +109,7 @@ pplx::task<void> OverviewApi::overviewGet(boost::optional<utility::string_t> tim
         if (response.status_code() >= 400)
         {
             throw ApiException(response.status_code()
-                , utility::conversions::to_string_t("error calling overviewGet: ") + response.reason_phrase()
+                , utility::conversions::to_string_t("error calling settingGet: ") + response.reason_phrase()
                 , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
         }
 
@@ -132,7 +120,7 @@ pplx::task<void> OverviewApi::overviewGet(boost::optional<utility::string_t> tim
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , utility::conversions::to_string_t("error calling overviewGet: unexpected response type: ") + contentType
+                    , utility::conversions::to_string_t("error calling settingGet: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }

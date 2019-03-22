@@ -65,7 +65,7 @@ install(TARGETS jiskefet-api-cpp-example JiskefetApiCpp
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib/static)
-install(FILES 
+install(FILES
     ApiClient.h
     ApiConfiguration.h
     HttpContent.h
@@ -78,9 +78,11 @@ install(FILES
 install(FILES
     api/AttachmentsApi.h
     api/AuthenticationApi.h
+    api/FlpApi.h
     api/LogsApi.h
     api/OverviewApi.h
     api/RunsApi.h
+    api/SettingApi.h
     api/SubsystemsApi.h
     api/UsersApi.h
     DESTINATION include/api/)
@@ -88,10 +90,27 @@ install(FILES
     model/CreateAttachmentDto.h
     model/CreateLogDto.h
     model/CreateRunDto.h
-    model/CreateRunResultDto.h
     model/CreateSubSystemPermissionDto.h
     model/LinkLogToRunDto.h
     model/LinkRunToLogDto.h
+    model/PatchFlpDto.h
+    model/PatchRunDto.h
     model/SubSystem.h
     model/User.h
     DESTINATION include/model/)
+install(FILES
+    jiskefet/CreateLogParameters.h
+    jiskefet/CreateRunParameters.h
+    jiskefet/GetLogsParameters.h
+    jiskefet/GetRunsParameters.h
+    jiskefet/JiskefetApi.h
+    jiskefet/JiskefetFactory.h
+    jiskefet/JiskefetInterface.h
+    jiskefet/Log.h
+    jiskefet/LogOrigin.h
+    jiskefet/LogSubtype.h
+    jiskefet/OrderDirection.h
+    jiskefet/Run.h
+    jiskefet/RunQuality.h
+    jiskefet/RunType.h
+    DESTINATION include/jiskefet/)

@@ -4,8 +4,9 @@
 #include <boost/date_time/posix_time/time_parsers.hpp>
 #include <boost/date_time/posix_time/time_formatters.hpp>
 #include <cpprest/json.h>
-#include "RunsApi.h"
+#include "FlpApi.h"
 #include "LogsApi.h"
+#include "RunsApi.h"
 
 
 namespace jiskefet
@@ -39,6 +40,25 @@ std::string logOriginToString(LogOrigin logOrigin) {
         default: throw std::runtime_error("Unknown LogOrigin enum value");
     }
 }
+
+std::string runTypeToString(RunType runType) {
+    switch (runType) {
+        case RunType::PHYSICS: return "PHYSICS";
+        case RunType::COSMICS: return "COSMICS";
+        case RunType::TECHNICAL: return "TECHNICAL";
+        default: throw std::runtime_error("Unknown RunType enum value");
+    }    
+}
+
+std::string runQualityToString(RunQuality runQuality) {
+    switch (runQuality) {
+        case RunQuality::GOOD: return "GOOD";
+        case RunQuality::BAD: return "BAD";
+        case RunQuality::UNKNOWN: return "UNKNOWN";
+        default: throw std::runtime_error("Unknown RunQuality enum value");
+    }    
+}
+
 
 utility::datetime ptimeToDateTime(boost::posix_time::ptime t)
 {
@@ -74,42 +94,50 @@ void JiskefetApi::runStart(int64_t runNumber, boost::posix_time::ptime o2Start,
       boost::posix_time::ptime triggerStart, std::string activityId, 
       RunType runType, int64_t nDetectors, int64_t nFlps, int64_t nEpns) 
 {
+    io::swagger::client::api::RunsApi runsApi(apiClient);
+    auto dto = std::make_shared<io::swagger::client::model::CreateRunDto>();
+    dto->setRunNumber(runNumber);
+    dto->setO2StartTime(ptimeToDateTime(o2Start));
+    dto->setTrgStartTime(ptimeToDateTime(triggerStart));
+    dto->setRunType(runTypeToString(runType));
+    dto->setActivityId(activityId);
+    dto->setNDetectors(nDetectors);
+    dto->setNFlps(nFlps);
+    dto->setNEpns(nEpns);
+    runsApi.runsPost(dto).get();
 }
 
 void JiskefetApi::runEnd(int64_t runNumber, boost::posix_time::ptime o2End, boost::posix_time::ptime triggerEnd,
       RunQuality runQuality)
 {
+    io::swagger::client::api::RunsApi runsApi(apiClient);
+    auto dto = std::make_shared<io::swagger::client::model::PatchRunDto>();
+    dto->setO2EndTime(ptimeToDateTime(o2End));
+    dto->setTrgEndTime(ptimeToDateTime(triggerEnd));
+    dto->setRunQuality(runQualityToString(runQuality));
+    runsApi.runsIdPatch(dto, runNumber);
 }
 
 void JiskefetApi::flpAdd(int64_t runNumber, std::string flpName, std::string hostName)
 {
+    io::swagger::client::api::FlpApi flpApi(apiClient);
+    auto dto = std::make_shared<io::swagger::client::model::CreateFlpDto>();
+    dto->setRun(runNumber);
+    dto->setFlpName(flpName);
+    dto->setFlpHostname(hostName);
+    flpApi.flpPost(dto);
 }
 
 void JiskefetApi::flpUpdateCounters(int64_t runNumber, std::string flpName, int64_t nSubtimeframes, int64_t nEquipmentBytes,
       int64_t nRecordingBytes, int64_t nFairMqBytes)
 {
-}
-
-void JiskefetApi::createRun(const CreateRunParameters& params)
-{
-    io::swagger::client::api::RunsApi runsApi(apiClient);
-    auto dto = std::make_shared<io::swagger::client::model::CreateRunDto>();
-    dto->setTimeO2Start(ptimeToDateTime(params.timeO2Start));
-    dto->setTimeTrgStart(ptimeToDateTime(params.timeTrgStart));
-    dto->setTimeO2End(ptimeToDateTime(params.timeO2End));
-    dto->setTimeTrgEnd(ptimeToDateTime(params.timeTrgEnd));
-    dto->setRunType(params.runType);
-    dto->setRunQuality(params.runQuality);
-    dto->setActivityId(params.activityId);
-    dto->setNDetectors(params.nDetectors);
-    dto->setNFlps(params.nFlps);
-    dto->setNEpns(params.nEpns);
-    dto->setNTimeframes(params.nTimeframes);
-    dto->setNSubtimeframes(params.nSubtimeframes);
-    dto->setBytesReadOut(params.bytesReadOut);
-    dto->setBytesTimeframeBuilder(params.bytesTimeframeBuilder);
-    std::shared_ptr<io::swagger::client::model::CreateRunResultDto> result = runsApi.runsPost(dto).get();
-    // TODO check if result is OK
+    io::swagger::client::api::FlpApi flpApi(apiClient);
+    auto dto = std::make_shared<io::swagger::client::model::PatchFlpDto>();
+    dto->setEquipmentBytes(nEquipmentBytes);
+    dto->setFairMQBytes(nFairMqBytes);
+    dto->setNSubTimeframes(nSubtimeframes);
+    dto->setRecordingBytes(nRecordingBytes);
+    flpApi.flpNameRunsIdPatch(dto, flpName, runNumber);
 }
 
 std::vector<Run> JiskefetApi::getRuns(const GetRunsParameters& params)
@@ -133,8 +161,8 @@ std::vector<Run> JiskefetApi::getRuns(const GetRunsParameters& params)
         params.startTimeO2End ? ptimeToDateTime(*params.startTimeO2End) : emptyTime,
         params.endTimeO2End ? ptimeToDateTime(*params.endTimeO2End) : emptyTime,
         params.activityId,
-        params.runType,
-        params.runQuality);
+        params.runType ? runTypeToString(*params.runType) : emptyString,
+        params.runQuality ? runQualityToString(*params.runQuality) : emptyString);
 
     std::shared_ptr<io::swagger::client::model::Object> result = taskRunsGet.get();
 
@@ -170,7 +198,7 @@ void JiskefetApi::createLog(const CreateLogParameters& params)
     dto->setSubtype(logSubtypeToString(params.subtype));
     dto->setOrigin(logOriginToString(params.origin));
     dto->setTitle(params.title);
-    dto->setText(params.text);
+    dto->setBody(params.text);
 
     // Not sure how this works...
     //dto->setAttachments(???); 

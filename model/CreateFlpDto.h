@@ -11,17 +11,18 @@
  */
 
 /*
- * User.h
+ * CreateFlpDto.h
  *
  * 
  */
 
-#ifndef IO_SWAGGER_CLIENT_MODEL_User_H_
-#define IO_SWAGGER_CLIENT_MODEL_User_H_
+#ifndef IO_SWAGGER_CLIENT_MODEL_CreateFlpDto_H_
+#define IO_SWAGGER_CLIENT_MODEL_CreateFlpDto_H_
 
 
 #include "../ModelBase.h"
 
+#include <cpprest/details/basic_types.h>
 
 namespace io {
 namespace swagger {
@@ -31,12 +32,12 @@ namespace model {
 /// <summary>
 /// 
 /// </summary>
-class  User
+class  CreateFlpDto
     : public ModelBase
 {
 public:
-    User();
-    virtual ~User();
+    CreateFlpDto();
+    virtual ~CreateFlpDto();
 
     /////////////////////////////////////////////
     /// ModelBase overrides
@@ -50,15 +51,33 @@ public:
     void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
 
     /////////////////////////////////////////////
-    /// User members
+    /// CreateFlpDto members
 
+    /// <summary>
+    /// Name of the flp
+    /// </summary>
+    utility::string_t getFlpName() const;
+        void setFlpName(utility::string_t value);
+    /// <summary>
+    /// Name of the hostmachine, where the flp comes from.
+    /// </summary>
+    utility::string_t getFlpHostname() const;
+        void setFlpHostname(utility::string_t value);
+    /// <summary>
+    /// Attached run numbers of this log
+    /// </summary>
+    double getRun() const;
+        void setRun(double value);
 
 protected:
-};
+    utility::string_t m_FlpName;
+        utility::string_t m_FlpHostname;
+        double m_Run;
+    };
 
 }
 }
 }
 }
 
-#endif /* IO_SWAGGER_CLIENT_MODEL_User_H_ */
+#endif /* IO_SWAGGER_CLIENT_MODEL_CreateFlpDto_H_ */

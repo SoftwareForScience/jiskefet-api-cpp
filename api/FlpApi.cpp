@@ -11,7 +11,7 @@
  */
 
 
-#include "LogsApi.h"
+#include "FlpApi.h"
 #include "IHttpBody.h"
 #include "JsonBody.h"
 #include "MultipartFormData.h"
@@ -27,188 +27,23 @@ namespace api {
 
 using namespace io::swagger::client::model;
 
-LogsApi::LogsApi( std::shared_ptr<ApiClient> apiClient )
+FlpApi::FlpApi( std::shared_ptr<ApiClient> apiClient )
     : m_ApiClient(apiClient)
 {
 }
 
-LogsApi::~LogsApi()
+FlpApi::~FlpApi()
 {
 }
 
-pplx::task<std::shared_ptr<Object>> LogsApi::logsGet(boost::optional<utility::string_t> orderBy, boost::optional<utility::string_t> orderDirection, boost::optional<utility::string_t> pageSize, boost::optional<utility::string_t> pageNumber, boost::optional<utility::string_t> logId, boost::optional<utility::string_t> searchterm, boost::optional<utility::string_t> subtype, boost::optional<utility::string_t> origin, boost::optional<utility::string_t> startCreationTime, boost::optional<utility::string_t> endCreationTime, boost::optional<utility::string_t> user)
+pplx::task<std::shared_ptr<Object>> FlpApi::flpNameRunsIdGet(utility::string_t name, double id)
 {
 
 
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
-    utility::string_t path = utility::conversions::to_string_t("/logs");
-    
-    std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
-    std::map<utility::string_t, utility::string_t> formParams;
-    std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
-
-    std::unordered_set<utility::string_t> responseHttpContentTypes;
-    responseHttpContentTypes.insert( utility::conversions::to_string_t("application/json") );
-
-    utility::string_t responseHttpContentType;
-
-    // use JSON if possible
-    if ( responseHttpContentTypes.size() == 0 )
-    {
-        responseHttpContentType = utility::conversions::to_string_t("application/json");
-    }
-    // JSON
-    else if ( responseHttpContentTypes.find(utility::conversions::to_string_t("application/json")) != responseHttpContentTypes.end() )
-    {
-        responseHttpContentType = utility::conversions::to_string_t("application/json");
-    }
-    // multipart formdata
-    else if( responseHttpContentTypes.find(utility::conversions::to_string_t("multipart/form-data")) != responseHttpContentTypes.end() )
-    {
-        responseHttpContentType = utility::conversions::to_string_t("multipart/form-data");
-    }
-    else
-    {
-        throw ApiException(400, utility::conversions::to_string_t("LogsApi->logsGet does not produce any supported media type"));
-    }
-
-    headerParams[utility::conversions::to_string_t("Accept")] = responseHttpContentType;
-
-    std::unordered_set<utility::string_t> consumeHttpContentTypes;
-    consumeHttpContentTypes.insert( utility::conversions::to_string_t("application/json") );
-
-    if (orderBy)
-    {
-        queryParams[utility::conversions::to_string_t("orderBy")] = ApiClient::parameterToString(*orderBy);
-    }
-    if (orderDirection)
-    {
-        queryParams[utility::conversions::to_string_t("orderDirection")] = ApiClient::parameterToString(*orderDirection);
-    }
-    if (pageSize)
-    {
-        queryParams[utility::conversions::to_string_t("pageSize")] = ApiClient::parameterToString(*pageSize);
-    }
-    if (pageNumber)
-    {
-        queryParams[utility::conversions::to_string_t("pageNumber")] = ApiClient::parameterToString(*pageNumber);
-    }
-    if (logId)
-    {
-        queryParams[utility::conversions::to_string_t("logId")] = ApiClient::parameterToString(*logId);
-    }
-    if (searchterm)
-    {
-        queryParams[utility::conversions::to_string_t("searchterm")] = ApiClient::parameterToString(*searchterm);
-    }
-    if (subtype)
-    {
-        queryParams[utility::conversions::to_string_t("subtype")] = ApiClient::parameterToString(*subtype);
-    }
-    if (origin)
-    {
-        queryParams[utility::conversions::to_string_t("origin")] = ApiClient::parameterToString(*origin);
-    }
-    if (startCreationTime)
-    {
-        queryParams[utility::conversions::to_string_t("startCreationTime")] = ApiClient::parameterToString(*startCreationTime);
-    }
-    if (endCreationTime)
-    {
-        queryParams[utility::conversions::to_string_t("endCreationTime")] = ApiClient::parameterToString(*endCreationTime);
-    }
-    if (user)
-    {
-        queryParams[utility::conversions::to_string_t("user")] = ApiClient::parameterToString(*user);
-    }
-
-    std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t requestHttpContentType;
-
-    // use JSON if possible
-    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(utility::conversions::to_string_t("application/json")) != consumeHttpContentTypes.end() )
-    {
-        requestHttpContentType = utility::conversions::to_string_t("application/json");
-    }
-    // multipart formdata
-    else if( consumeHttpContentTypes.find(utility::conversions::to_string_t("multipart/form-data")) != consumeHttpContentTypes.end() )
-    {
-        requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
-    }
-    else
-    {
-        throw ApiException(415, utility::conversions::to_string_t("LogsApi->logsGet does not consume any supported media type"));
-    }
-
-    // authentication (bearer) required
-    {
-        utility::string_t apiKey = apiConfiguration->getApiKey(utility::conversions::to_string_t("Authorization"));
-        if ( apiKey.size() > 0 )
-        {
-            headerParams[utility::conversions::to_string_t("Authorization")] = apiKey;
-        }
-    }
-
-    return m_ApiClient->callApi(path, utility::conversions::to_string_t("GET"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
-    .then([=](web::http::http_response response)
-    {
-        // 1xx - informational : OK
-        // 2xx - successful       : OK
-        // 3xx - redirection   : OK
-        // 4xx - client error  : not OK
-        // 5xx - client error  : not OK
-        if (response.status_code() >= 400)
-        {
-            throw ApiException(response.status_code()
-                , utility::conversions::to_string_t("error calling logsGet: ") + response.reason_phrase()
-                , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
-        }
-
-        // check response content type
-        if(response.headers().has(utility::conversions::to_string_t("Content-Type")))
-        {
-            utility::string_t contentType = response.headers()[utility::conversions::to_string_t("Content-Type")];
-            if( contentType.find(responseHttpContentType) == std::string::npos )
-            {
-                throw ApiException(500
-                    , utility::conversions::to_string_t("error calling logsGet: unexpected response type: ") + contentType
-                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
-            }
-        }
-
-        return response.extract_string();
-    })
-    .then([=](utility::string_t response)
-    {
-        auto result = std::make_shared<Object>();
-
-        if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
-        {
-            web::json::value json = web::json::value::parse(response);
-
-            result->fromJson(json);
-        }
-        // else if(responseHttpContentType == utility::conversions::to_string_t("multipart/form-data"))
-        // {
-        // TODO multipart response parsing
-        // }
-        else
-        {
-            throw ApiException(500
-                , utility::conversions::to_string_t("error calling logsGet: unsupported response type"));
-        }
-
-        return result;
-    });
-}
-pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(double id)
-{
-
-
-    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
-    utility::string_t path = utility::conversions::to_string_t("/logs/{id}");
-    boost::replace_all(path, utility::conversions::to_string_t("{") + utility::conversions::to_string_t("id") + utility::conversions::to_string_t("}"), ApiClient::parameterToString(id));
+    utility::string_t path = utility::conversions::to_string_t("/flp/{name}/runs/{id}");
+    boost::replace_all(path, utility::conversions::to_string_t("{") + utility::conversions::to_string_t("name") + utility::conversions::to_string_t("}"), ApiClient::parameterToString(name));
+boost::replace_all(path, utility::conversions::to_string_t("{") + utility::conversions::to_string_t("id") + utility::conversions::to_string_t("}"), ApiClient::parameterToString(id));
 
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
@@ -237,7 +72,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(double id)
     }
     else
     {
-        throw ApiException(400, utility::conversions::to_string_t("LogsApi->logsIdGet does not produce any supported media type"));
+        throw ApiException(400, utility::conversions::to_string_t("FlpApi->flpNameRunsIdGet does not produce any supported media type"));
     }
 
     headerParams[utility::conversions::to_string_t("Accept")] = responseHttpContentType;
@@ -261,7 +96,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(double id)
     }
     else
     {
-        throw ApiException(415, utility::conversions::to_string_t("LogsApi->logsIdGet does not consume any supported media type"));
+        throw ApiException(415, utility::conversions::to_string_t("FlpApi->flpNameRunsIdGet does not consume any supported media type"));
     }
 
     // authentication (bearer) required
@@ -284,7 +119,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(double id)
         if (response.status_code() >= 400)
         {
             throw ApiException(response.status_code()
-                , utility::conversions::to_string_t("error calling logsIdGet: ") + response.reason_phrase()
+                , utility::conversions::to_string_t("error calling flpNameRunsIdGet: ") + response.reason_phrase()
                 , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
         }
 
@@ -295,7 +130,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(double id)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , utility::conversions::to_string_t("error calling logsIdGet: unexpected response type: ") + contentType
+                    , utility::conversions::to_string_t("error calling flpNameRunsIdGet: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -319,25 +154,26 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdGet(double id)
         else
         {
             throw ApiException(500
-                , utility::conversions::to_string_t("error calling logsIdGet: unsupported response type"));
+                , utility::conversions::to_string_t("error calling flpNameRunsIdGet: unsupported response type"));
         }
 
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<LinkRunToLogDto> linkRunToLogDto, double id)
+pplx::task<std::shared_ptr<Object>> FlpApi::flpNameRunsIdPatch(std::shared_ptr<PatchFlpDto> patchFlpDto, utility::string_t name, double id)
 {
 
-    // verify the required parameter 'linkRunToLogDto' is set
-    if (linkRunToLogDto == nullptr)
+    // verify the required parameter 'patchFlpDto' is set
+    if (patchFlpDto == nullptr)
     {
-        throw ApiException(400, utility::conversions::to_string_t("Missing required parameter 'linkRunToLogDto' when calling LogsApi->logsIdRunsPatch"));
+        throw ApiException(400, utility::conversions::to_string_t("Missing required parameter 'patchFlpDto' when calling FlpApi->flpNameRunsIdPatch"));
     }
 
 
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
-    utility::string_t path = utility::conversions::to_string_t("/logs/{id}/runs");
-    boost::replace_all(path, utility::conversions::to_string_t("{") + utility::conversions::to_string_t("id") + utility::conversions::to_string_t("}"), ApiClient::parameterToString(id));
+    utility::string_t path = utility::conversions::to_string_t("/flp/{name}/runs/{id}");
+    boost::replace_all(path, utility::conversions::to_string_t("{") + utility::conversions::to_string_t("name") + utility::conversions::to_string_t("}"), ApiClient::parameterToString(name));
+boost::replace_all(path, utility::conversions::to_string_t("{") + utility::conversions::to_string_t("id") + utility::conversions::to_string_t("}"), ApiClient::parameterToString(id));
 
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
@@ -366,7 +202,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<Lin
     }
     else
     {
-        throw ApiException(400, utility::conversions::to_string_t("LogsApi->logsIdRunsPatch does not produce any supported media type"));
+        throw ApiException(400, utility::conversions::to_string_t("FlpApi->flpNameRunsIdPatch does not produce any supported media type"));
     }
 
     headerParams[utility::conversions::to_string_t("Accept")] = responseHttpContentType;
@@ -384,7 +220,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<Lin
         requestHttpContentType = utility::conversions::to_string_t("application/json");
         web::json::value json;
 
-        json = ModelBase::toJson(linkRunToLogDto);
+        json = ModelBase::toJson(patchFlpDto);
         
 
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
@@ -395,9 +231,9 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<Lin
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
 
-        if(linkRunToLogDto.get())
+        if(patchFlpDto.get())
         {
-            linkRunToLogDto->toMultipart(multipart, utility::conversions::to_string_t("linkRunToLogDto"));
+            patchFlpDto->toMultipart(multipart, utility::conversions::to_string_t("patchFlpDto"));
         }
 
         httpBody = multipart;
@@ -405,7 +241,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<Lin
     }
     else
     {
-        throw ApiException(415, utility::conversions::to_string_t("LogsApi->logsIdRunsPatch does not consume any supported media type"));
+        throw ApiException(415, utility::conversions::to_string_t("FlpApi->flpNameRunsIdPatch does not consume any supported media type"));
     }
 
     // authentication (bearer) required
@@ -428,7 +264,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<Lin
         if (response.status_code() >= 400)
         {
             throw ApiException(response.status_code()
-                , utility::conversions::to_string_t("error calling logsIdRunsPatch: ") + response.reason_phrase()
+                , utility::conversions::to_string_t("error calling flpNameRunsIdPatch: ") + response.reason_phrase()
                 , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
         }
 
@@ -439,7 +275,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<Lin
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , utility::conversions::to_string_t("error calling logsIdRunsPatch: unexpected response type: ") + contentType
+                    , utility::conversions::to_string_t("error calling flpNameRunsIdPatch: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -463,24 +299,24 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsIdRunsPatch(std::shared_ptr<Lin
         else
         {
             throw ApiException(500
-                , utility::conversions::to_string_t("error calling logsIdRunsPatch: unsupported response type"));
+                , utility::conversions::to_string_t("error calling flpNameRunsIdPatch: unsupported response type"));
         }
 
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> LogsApi::logsPost(std::shared_ptr<CreateLogDto> createLogDto)
+pplx::task<std::shared_ptr<Object>> FlpApi::flpPost(std::shared_ptr<CreateFlpDto> createFlpDto)
 {
 
-    // verify the required parameter 'createLogDto' is set
-    if (createLogDto == nullptr)
+    // verify the required parameter 'createFlpDto' is set
+    if (createFlpDto == nullptr)
     {
-        throw ApiException(400, utility::conversions::to_string_t("Missing required parameter 'createLogDto' when calling LogsApi->logsPost"));
+        throw ApiException(400, utility::conversions::to_string_t("Missing required parameter 'createFlpDto' when calling FlpApi->flpPost"));
     }
 
 
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
-    utility::string_t path = utility::conversions::to_string_t("/logs");
+    utility::string_t path = utility::conversions::to_string_t("/flp");
     
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
@@ -509,7 +345,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsPost(std::shared_ptr<CreateLogD
     }
     else
     {
-        throw ApiException(400, utility::conversions::to_string_t("LogsApi->logsPost does not produce any supported media type"));
+        throw ApiException(400, utility::conversions::to_string_t("FlpApi->flpPost does not produce any supported media type"));
     }
 
     headerParams[utility::conversions::to_string_t("Accept")] = responseHttpContentType;
@@ -527,7 +363,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsPost(std::shared_ptr<CreateLogD
         requestHttpContentType = utility::conversions::to_string_t("application/json");
         web::json::value json;
 
-        json = ModelBase::toJson(createLogDto);
+        json = ModelBase::toJson(createFlpDto);
         
 
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
@@ -538,9 +374,9 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsPost(std::shared_ptr<CreateLogD
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
 
-        if(createLogDto.get())
+        if(createFlpDto.get())
         {
-            createLogDto->toMultipart(multipart, utility::conversions::to_string_t("createLogDto"));
+            createFlpDto->toMultipart(multipart, utility::conversions::to_string_t("createFlpDto"));
         }
 
         httpBody = multipart;
@@ -548,7 +384,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsPost(std::shared_ptr<CreateLogD
     }
     else
     {
-        throw ApiException(415, utility::conversions::to_string_t("LogsApi->logsPost does not consume any supported media type"));
+        throw ApiException(415, utility::conversions::to_string_t("FlpApi->flpPost does not consume any supported media type"));
     }
 
     // authentication (bearer) required
@@ -571,7 +407,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsPost(std::shared_ptr<CreateLogD
         if (response.status_code() >= 400)
         {
             throw ApiException(response.status_code()
-                , utility::conversions::to_string_t("error calling logsPost: ") + response.reason_phrase()
+                , utility::conversions::to_string_t("error calling flpPost: ") + response.reason_phrase()
                 , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
         }
 
@@ -582,7 +418,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsPost(std::shared_ptr<CreateLogD
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , utility::conversions::to_string_t("error calling logsPost: unexpected response type: ") + contentType
+                    , utility::conversions::to_string_t("error calling flpPost: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -606,7 +442,7 @@ pplx::task<std::shared_ptr<Object>> LogsApi::logsPost(std::shared_ptr<CreateLogD
         else
         {
             throw ApiException(500
-                , utility::conversions::to_string_t("error calling logsPost: unsupported response type"));
+                , utility::conversions::to_string_t("error calling flpPost: unsupported response type"));
         }
 
         return result;

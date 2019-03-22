@@ -3,6 +3,8 @@
 #include <string>
 #include <boost/optional.hpp>
 #include <boost/date_time/posix_time/ptime.hpp>
+#include "RunType.h"
+#include "RunQuality.h"
 
 
 namespace jiskefet
@@ -23,7 +25,7 @@ struct GetRunsParameters
     boost::optional<boost::posix_time::ptime> startTimeO2End;
     boost::optional<boost::posix_time::ptime> endTimeO2End;
     boost::optional<std::string> activityId;
-    boost::optional<int32_t> runType;
-    boost::optional<int32_t> runQuality;
+    boost::optional<RunType> runType;
+    boost::optional<RunQuality> runQuality;
 };
 }

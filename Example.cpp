@@ -26,32 +26,9 @@ int main(int argc, char const *argv[])
 
     auto api = jiskefet::getApiInstance(url, apiToken);
 
-    // (Old API) Post run
+    // Start & end run, with FLPs
     {
-        auto now = boost::posix_time::microsec_clock::universal_time();
-        auto sometime = boost::posix_time::from_iso_extended_string("2007-03-01T13:00:00");
-
-        jiskefet::CreateRunParameters params;
-        params.timeO2Start = sometime;
-        params.timeTrgStart = sometime;
-        params.timeO2End = now;
-        params.timeTrgEnd = now;
-        params.runType = "my-run-type";
-        params.runQuality = "my-run-quality";
-        params.activityId = "cpp-api";
-        params.nDetectors = 123;
-        params.nFlps = 200;
-        params.nEpns = 1000;
-        params.nTimeframes = 1231;
-        params.nSubtimeframes = 12312;
-        params.bytesReadOut = 1024*1024;
-        params.bytesTimeframeBuilder = 512*1024;
-        api->createRun(params);
-    }
-
-    // (New API) Start & end run, with FLPs
-    {
-        const int64_t runNumber = 1;
+        const int64_t runNumber = rand()*1000.0;
         auto now = boost::posix_time::microsec_clock::universal_time();
         api->runStart(runNumber, now, now, "cpp-api", RunType::TECHNICAL, 123, 200, 100);
         api->flpAdd(runNumber, "flp-1", "localhost");
