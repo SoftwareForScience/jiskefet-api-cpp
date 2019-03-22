@@ -1,8 +1,5 @@
 #include <string>
 #include <iostream>
-#include "ApiClient.h"
-#include "api/RunsApi.h"
-#include "cpprest/oauth2.h"
 #include "jiskefet/JiskefetFactory.h"
 
 #include <boost/date_time.hpp>
