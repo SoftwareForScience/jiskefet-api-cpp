@@ -165,28 +165,33 @@ std::vector<Run> JiskefetApi::getRuns(const GetRunsParameters& params)
         params.runQuality ? runQualityToString(*params.runQuality) : emptyString);
 
     std::shared_ptr<io::swagger::client::model::Object> result = taskRunsGet.get();
-
+    auto data = result->getValue("data");
+    
+    
     std::vector<Run> runs;
-    auto runsJson = result->getValue("runs").as_array();
-    for (const auto& item : runsJson) {
-        const auto& runJson = item.as_object();
-        Run run;
-        run.runNumber = runJson.at("runNumber").as_number().to_int64();
-        run.timeO2Start = ptimeFromString(runJson.at("timeO2Start").as_string());
-        run.timeTrgStart = ptimeFromString(runJson.at("timeTrgStart").as_string());
-        run.timeO2End = ptimeFromString(runJson.at("timeO2End").as_string());
-        run.timeTrgEnd = ptimeFromString(runJson.at("timeTrgEnd").as_string());
-        run.runType = runJson.at("runType").as_string();
-        run.runQuality = runJson.at("runQuality").as_string();
-        run.activityId = runJson.at("activityId").as_string();
-        run.nDetectors = runJson.at("nDetectors").as_number().to_int64();
-        run.nFlps = runJson.at("nFlps").as_number().to_int64();
-        run.nEpns = runJson.at("nEpns").as_number().to_int64();
-        run.nTimeframes = runJson.at("nTimeframes").as_number().to_int64();
-        run.nSubtimeframes = runJson.at("nSubtimeframes").as_number().to_int64();
-        run.bytesReadOut = runJson.at("bytesReadOut").as_number().to_int64();
-        run.bytesTimeframeBuilder = runJson.at("bytesTimeframeBuilder").as_number().to_int64();
-        runs.push_back(run);
+    int count = data.at("count").as_integer();
+    if (count > 0) {
+        auto runsJson = data.at("runs").as_array();
+        for (const auto& item : runsJson) {
+            const auto& runJson = item.as_object();
+            Run run;
+            run.runNumber = runJson.at("runNumber").as_number().to_int64();
+            run.timeO2Start = ptimeFromString(runJson.at("timeO2Start").as_string());
+            run.timeTrgStart = ptimeFromString(runJson.at("timeTrgStart").as_string());
+            run.timeO2End = ptimeFromString(runJson.at("timeO2End").as_string());
+            run.timeTrgEnd = ptimeFromString(runJson.at("timeTrgEnd").as_string());
+            run.runType = runJson.at("runType").as_string();
+            run.runQuality = runJson.at("runQuality").as_string();
+            run.activityId = runJson.at("activityId").as_string();
+            run.nDetectors = runJson.at("nDetectors").as_number().to_int64();
+            run.nFlps = runJson.at("nFlps").as_number().to_int64();
+            run.nEpns = runJson.at("nEpns").as_number().to_int64();
+            run.nTimeframes = runJson.at("nTimeframes").as_number().to_int64();
+            run.nSubtimeframes = runJson.at("nSubtimeframes").as_number().to_int64();
+            run.bytesReadOut = runJson.at("bytesReadOut").as_number().to_int64();
+            run.bytesTimeframeBuilder = runJson.at("bytesTimeframeBuilder").as_number().to_int64();
+            runs.push_back(run);
+        }
     }
     return runs;
 }

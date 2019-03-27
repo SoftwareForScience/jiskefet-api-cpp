@@ -52,7 +52,7 @@ int main(int argc, char const *argv[])
         api->runEnd(runNumber, now, now, RunQuality::UNKNOWN);
     }
 
-    /*
+    
     // Get run
     {
         jiskefet::GetRunsParameters params;
@@ -68,7 +68,7 @@ int main(int argc, char const *argv[])
             << "    bytesReadOut : " << run.bytesReadOut << '\n'
             << "  },\n";
         }
-    }*/
+    }
 
     return 0;
 }
