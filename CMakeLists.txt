@@ -39,78 +39,68 @@ if( NOT DEFINED CPPREST_ROOT )
     message( FATAL_ERROR "Failed to find cpprest SDK (or missing components). Double check that \"CPPREST_ROOT\" is properly set")
 endif( NOT DEFINED CPPREST_ROOT )
 
-include_directories(${PROJECT_SOURCE_DIR} api model ${CPPREST_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
+include_directories(
+    ${PROJECT_SOURCE_DIR}
+    src/cpprest-client
+    src/cpprest-client/api
+    src/cpprest-client/model
+    ${CPPREST_INCLUDE_DIR}
+    ${Boost_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIR})
 
-#SUPPORTING FILES
-set(SUPPORTING_FILES 
-    "ApiClient"
-    "ApiConfiguration"
-    "ApiException"
-    "HttpContent"
-    "IHttpBody"
-    "JsonBody"
-    "ModelBase"
-    "MultipartFormData"
-    "Object")
+set(SOURCE_FILES
+    src/cpprest-client/ApiClient.cpp
+    src/cpprest-client/ApiConfiguration.cpp
+    src/cpprest-client/ApiException.cpp
+    src/cpprest-client/HttpContent.cpp
+    src/cpprest-client/JsonBody.cpp
+    src/cpprest-client/ModelBase.cpp
+    src/cpprest-client/MultipartFormData.cpp
+    src/cpprest-client/Object.cpp
+    src/cpprest-client/api/AttachmentsApi.cpp
+    src/cpprest-client/api/AuthenticationApi.cpp
+    src/cpprest-client/api/FlpApi.cpp
+    src/cpprest-client/api/LogsApi.cpp
+    src/cpprest-client/api/OverviewApi.cpp
+    src/cpprest-client/api/RunsApi.cpp
+    src/cpprest-client/api/SettingApi.cpp
+    src/cpprest-client/api/SubsystemsApi.cpp
+    src/cpprest-client/api/UsersApi.cpp
+    src/cpprest-client/model/CreateAttachmentDto.cpp
+    src/cpprest-client/model/CreateFlpDto.cpp
+    src/cpprest-client/model/CreateLogDto.cpp
+    src/cpprest-client/model/CreateRunDto.cpp
+    src/cpprest-client/model/CreateSubSystemPermissionDto.cpp
+    src/cpprest-client/model/FlpRole.cpp
+    src/cpprest-client/model/LinkLogToRunDto.cpp
+    src/cpprest-client/model/LinkRunToLogDto.cpp
+    src/cpprest-client/model/Log.cpp
+    src/cpprest-client/model/PatchFlpDto.cpp
+    src/cpprest-client/model/PatchRunDto.cpp
+    src/cpprest-client/model/Run.cpp
+    src/cpprest-client/model/SubSystem.cpp
+    src/cpprest-client/model/User.cpp
+    src/JiskefetApi.cpp
+    src/JiskefetFactory.cpp)
 
-#SOURCE FILES
-file(GLOB SOURCE_FILES "api/*"  "model/*" "jiskefet/*")
+message (SOURCE_FILES ${SOURCE_FILES})
 
-add_library(${PROJECT_NAME} ${SUPPORTING_FILES} ${SOURCE_FILES})
+add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
-add_executable(jiskefet-api-cpp-example Example.cpp)
-target_link_libraries(jiskefet-api-cpp-example ${PROJECT_NAME} ${CPPREST_LIBRARIES} ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} pthread)
+add_executable(jiskefet-api-cpp-example src/Example.cpp)
+
+target_link_libraries(jiskefet-api-cpp-example 
+    ${PROJECT_NAME} 
+    ${CPPREST_LIBRARIES} 
+    ${Boost_LIBRARIES} 
+    ${OPENSSL_LIBRARIES} 
+    pthread)
 
 install(TARGETS jiskefet-api-cpp-example JiskefetApiCpp
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib/static)
-install(FILES
-    ApiClient.h
-    ApiConfiguration.h
-    HttpContent.h
-    IHttpBody.h
-    JsonBody.h
-    ModelBase.h
-    MultipartFormData.h
-    Object.h
-    DESTINATION include/)
-install(FILES
-    api/AttachmentsApi.h
-    api/AuthenticationApi.h
-    api/FlpApi.h
-    api/LogsApi.h
-    api/OverviewApi.h
-    api/RunsApi.h
-    api/SettingApi.h
-    api/SubsystemsApi.h
-    api/UsersApi.h
-    DESTINATION include/api/)
-install(FILES
-    model/CreateAttachmentDto.h
-    model/CreateLogDto.h
-    model/CreateRunDto.h
-    model/CreateSubSystemPermissionDto.h
-    model/LinkLogToRunDto.h
-    model/LinkRunToLogDto.h
-    model/PatchFlpDto.h
-    model/PatchRunDto.h
-    model/SubSystem.h
-    model/User.h
-    DESTINATION include/model/)
-install(FILES
-    jiskefet/CreateLogParameters.h
-    jiskefet/CreateRunParameters.h
-    jiskefet/GetLogsParameters.h
-    jiskefet/GetRunsParameters.h
-    jiskefet/JiskefetApi.h
-    jiskefet/JiskefetFactory.h
-    jiskefet/JiskefetInterface.h
-    jiskefet/Log.h
-    jiskefet/LogOrigin.h
-    jiskefet/LogSubtype.h
-    jiskefet/OrderDirection.h
-    jiskefet/Run.h
-    jiskefet/RunQuality.h
-    jiskefet/RunType.h
-    DESTINATION include/jiskefet/)
+
+install(DIRECTORY src/ 
+    DESTINATION include/jiskefet-api-cpp
+    FILES_MATCHING PATTERN "*.h")

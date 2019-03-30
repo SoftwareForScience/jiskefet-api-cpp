@@ -80,14 +80,13 @@ docker run --rm \
 ### Online
 1. Copy & paste openapi-spec.yaml contents into the editor at https://editor.swagger.io/
 2. Under the "Generate Client" menu, select "cpprest"
-3. Extract the archive
+3. Extract the archive under `src/cpprest-client`
 
 
 ### Additional work
-At this point, it still needs some work however.
+At this point, it still needs some work, however.
 
-Do not use the generated CMakeLists.txt, manually update the existing one.
-If you have to regenerate the code, it's recommended to update the custom CMakeLists.txt manually, rather than replacing it with the newly generated one.
+Firstly, you may need to manually update the CMakeLists.txt if any files have been added/removed from the generated code.
 
 In addition, the generated code is buggy in the way it initializes shared_ptrs.
 It "wants" to initialize the shared_ptr with a default-initialized Object, but actually ends up with a null-initialized shared_ptr.
@@ -102,7 +101,7 @@ std::shared_ptr<Object> result(nullptr);
 auto result = std::make_shared<Object>();
 ```
 
-For example with
+Use your favorite editor, or the following command:
 ```
 find . -exec sed -i -e 's/std::shared_ptr<Object> result(nullptr);/auto result = std::make_shared<Object>();/g' {} \;
 ```
