@@ -1,31 +1,22 @@
 # Jiskefet C++ Client API
 This is a C++ client API for Jiskefet based on the Swagger code generator
 
+The repository contains generated code in `src/cpprest-client`. For more information about this code, see the [Dev notes].
 
-# Generated code
-A lot of the code in this repository is generated. The exceptions are:
-* The example code of `Example.cpp`
-* Code in the `jiskefet` subdirectory. 
-  This is a convenient wrapper around the generated code, and it's what users are supposed to use.
-  It is currently focused on providing the basic necessities (i.e. posting/getting runs), 
-  so it does not yet cover all of the functionality of the REST API.
+The rest of the source code consists of a convenient wrapper around the generated code, 
+and it's this wrapper that users are supposed to use.
+It is currently focused on providing the basic necessities (i.e. posting/getting runs), 
+so it does not yet cover all of the functionality of the REST API.
+
+There's also an example of the usage in `src/Example.cpp`
 
 
 # Setup
-## alibuild
+## aliBuild
+For setting up aliBuild, refer to https://alice-doc.github.io/alice-analysis-tutorial/building/
 ```
-mkdir alice; cd alice
-git clone https://github.com/SoftwareForScience/alidist.git
+aliBuild init Jiksefet-Api-Cpp@master --defaults=o2
 aliBuild build Jiskefet-Api-Cpp --defaults=o2
-cd sw/SOURCES/cpprestsdk/master/master/
-git submodule update --init
-cd -
-aliBuild build Jiskefet-Api-Cpp --defaults=o2
-```
-To use:
-```
-alienv enter Jiskefet-Api-Cpp/latest-o2
-which jiskefet-api-cpp
 ```
 
 
@@ -63,7 +54,7 @@ docker run --rm -v ${PWD}:/local:Z \
     -g cpp-restsdk \
     -o /local/gen/cpp-restsdk
 ```
-Swagger tools (local not working, see [Online]
+Swagger tools (local not working, see [Online])
 ```
 docker pull swaggerapi/swagger-codegen-cli
 
@@ -80,7 +71,7 @@ docker run --rm \
 ### Online
 1. Copy & paste openapi-spec.yaml contents into the editor at https://editor.swagger.io/
 2. Under the "Generate Client" menu, select "cpprest"
-3. Extract the archive under `src/cpprest-client`
+3. Extract the archive under `src/cpprest-client` (note: as the API changes, it's possible some old classes/files will no longer be present, so you might want to clean up the directory before extracting)
 
 
 ### Additional work
@@ -88,9 +79,10 @@ At this point, it still needs some work, however.
 
 Firstly, you may need to manually update the CMakeLists.txt if any files have been added/removed from the generated code.
 
-In addition, the generated code is buggy in the way it initializes shared_ptrs.
-It "wants" to initialize the shared_ptr with a default-initialized Object, but actually ends up with a null-initialized shared_ptr.
+In addition, the generated code is buggy in the way it initializes `shared_ptr`s.
+The intention is to initialize the `shared_ptr` with a default-initialized `Object`, but it actually ends up with a null-initialized `shared_ptr`.
 Maybe the generated way worked in an older C++ standard, but in C++17 it's broken.
+The issue is known, see https://github.com/swagger-api/swagger-codegen/issues/7557 and https://github.com/swagger-api/swagger-codegen/pull/7742
 To fix it, do a find and replace.
 * From:
 ```
