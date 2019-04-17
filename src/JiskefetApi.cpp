@@ -3,6 +3,7 @@
 #include <boost/date_time/posix_time/ptime.hpp>
 #include <boost/date_time/posix_time/time_parsers.hpp>
 #include <boost/date_time/posix_time/time_formatters.hpp>
+#include <boost/date_time/time_facet.hpp>
 #include <cpprest/json.h>
 #include "cpprest-client/api/FlpApi.h"
 #include "cpprest-client/api/LogsApi.h"
@@ -59,10 +60,14 @@ std::string runQualityToString(RunQuality runQuality) {
     }    
 }
 
-
 utility::datetime ptimeToDateTime(boost::posix_time::ptime t)
 {
-    return utility::datetime::from_string(boost::posix_time::to_iso_extended_string(t), utility::datetime::ISO_8601);
+    auto s = boost::posix_time::to_iso_extended_string(t);
+    // For now, we chop off the fractional seconds, the datetime thing doesn't like it
+    auto dotPos = s.find_first_of(".");
+    auto sub = s.substr(0, dotPos);
+    sub += "Z"; // Add timezone, we assume UTC+0 / Zulu
+    return utility::datetime::from_string(sub, utility::datetime::ISO_8601);
 };
 
 boost::posix_time::ptime datetimeToPtime(utility::datetime t)

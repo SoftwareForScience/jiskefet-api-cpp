@@ -21,8 +21,8 @@ class JiskefetInterface {
     /// Starts a run
     ///
     /// @param runNumber Integer ID of a specific data taking session.
-    /// @param o2Start Time when command to start a new Run was given.
-    /// @param triggerStart Time when Trigger subsystem was started.
+    /// @param o2Start Time (UTC) when command to start a new Run was given.
+    /// @param triggerStart Time (UTC) when Trigger subsystem was started.
     /// @param activityId Control ID string. Can be a long hash, 32 or 64 character long.
     /// @param runType Type of run. Might be replaced by tags.
     /// @param nDetectors Number of detectors in the Run.
@@ -34,8 +34,8 @@ class JiskefetInterface {
     /// Ends a run
     ///
     /// @param runNumber Integer ID of a specific data taking session.
-    /// @param o2End Time when Run was completely stopped.
-    /// @param triggerEnd Time when Trigger subsystem was stopped.
+    /// @param o2End Time (UTC) when Run was completely stopped.
+    /// @param triggerEnd (UTC) Time when Trigger subsystem was stopped.
     /// @param runQuality Overall quality of the data from O2 point of view.
     virtual void runEnd(int64_t runNumber, boost::posix_time::ptime o2End, boost::posix_time::ptime triggerEnd,
       RunQuality runQuality) = 0;
