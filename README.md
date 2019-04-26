@@ -34,7 +34,7 @@ If your api is at `http://myhost.server.address/api`:
 ```
 export JISKEFET_URL=http://myhost.server.address/api
 export JISKEFET_API_TOKEN=jnk5vh43785ycj4gdvlvm84fg...
-./jiskefet-api-cpp-example
+./jiskefet-api-cpp-example 1  # argument is run number to add
 ```
 Note: don't include the "Bearer " part of the token, it's added automatically.
 

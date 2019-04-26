@@ -6,6 +6,7 @@
 #include <boost/date_time.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/local_time_adjustor.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace 
 {
@@ -24,15 +25,15 @@ int main(int argc, char const *argv[])
     std::cout << "JISKEFET_URL: " << url << '\n'
         << "JISKEFET_API_TOKEN: " << apiToken << std::endl;
 
+    const int64_t runNumber = boost::lexical_cast<int64_t>(argv[1]);
+
     auto api = jiskefet::getApiInstance(url, apiToken);
 
     
     // Start & end run, with FLPs
     {
-        srand(time(nullptr));
-        const int64_t runNumber = rand() % 1000;
         auto now = boost::posix_time::microsec_clock::universal_time();
-        std::cout << "Starting run" << std::endl;
+        std::cout << "Starting run " << runNumber << std::endl;
         api->runStart(runNumber, now, now, "cpp-api", RunType::TECHNICAL, 123, 200, 100);
         std::cout << "Adding FLPs" << std::endl;
         api->flpAdd(runNumber, "flp-1", "localhost");
@@ -54,6 +55,7 @@ int main(int argc, char const *argv[])
 
     
     // Get run
+    return 0; // Disable for now...
     {
         std::cout << "Getting runs" << std::endl;
         jiskefet::GetRunsParameters params;
