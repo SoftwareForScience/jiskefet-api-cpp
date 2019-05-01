@@ -120,7 +120,7 @@ void JiskefetApi::runEnd(int64_t runNumber, boost::posix_time::ptime o2End, boos
     dto->setO2EndTime(ptimeToDateTime(o2End));
     dto->setTrgEndTime(ptimeToDateTime(triggerEnd));
     dto->setRunQuality(runQualityToString(runQuality));
-    runsApi.runsIdPatch(dto, runNumber);
+    runsApi.runsIdPatch(dto, runNumber).get();
 }
 
 void JiskefetApi::flpAdd(int64_t runNumber, std::string flpName, std::string hostName)
@@ -130,7 +130,7 @@ void JiskefetApi::flpAdd(int64_t runNumber, std::string flpName, std::string hos
     dto->setRun(runNumber);
     dto->setFlpName(flpName);
     dto->setFlpHostname(hostName);
-    flpApi.flpPost(dto);
+    flpApi.flpPost(dto).get();
 }
 
 void JiskefetApi::flpUpdateCounters(int64_t runNumber, std::string flpName, int64_t nSubtimeframes, int64_t nEquipmentBytes,
@@ -142,7 +142,7 @@ void JiskefetApi::flpUpdateCounters(int64_t runNumber, std::string flpName, int6
     dto->setFairMQBytes(nFairMqBytes);
     dto->setNSubTimeframes(nSubtimeframes);
     dto->setRecordingBytes(nRecordingBytes);
-    flpApi.flpNameRunsIdPatch(dto, flpName, runNumber);
+    flpApi.flpNameRunsIdPatch(dto, flpName, runNumber).get();
 }
 
 std::vector<Run> JiskefetApi::getRuns(const GetRunsParameters& params)

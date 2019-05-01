@@ -38,17 +38,16 @@ int main(int argc, char const *argv[])
         std::cout << "Adding FLPs" << std::endl;
         api->flpAdd(runNumber, "flp-1", "localhost");
         api->flpAdd(runNumber, "flp-2", "localhost");
-        std::this_thread::sleep_for(std::chrono::seconds(1));
 
         std::cout << "Updating FLPs" << std::endl;
         api->flpUpdateCounters(runNumber, "flp-1", 123, 123408, 5834, 9192);
         api->flpUpdateCounters(runNumber, "flp-2", 13, 318, 23, 952);
-        std::this_thread::sleep_for(std::chrono::seconds(1));
         
         std::cout << "Updating FLPs" << std::endl;
         api->flpUpdateCounters(runNumber, "flp-1", 234, 323408, 6834, 9292);
         
         std::cout << "Ending run" << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         now = boost::posix_time::microsec_clock::universal_time();
         api->runEnd(runNumber, now, now, RunQuality::UNKNOWN);
     }
