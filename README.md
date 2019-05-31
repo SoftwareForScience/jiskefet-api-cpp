@@ -15,7 +15,7 @@ There's also an example of the usage in `src/Example.cpp`
 ## aliBuild
 For setting up aliBuild, refer to https://alice-doc.github.io/alice-analysis-tutorial/building/
 ```
-aliBuild init Jiksefet-Api-Cpp@master --defaults=o2
+aliBuild init Jiskefet-Api-Cpp@master --defaults=o2
 aliBuild build Jiskefet-Api-Cpp --defaults=o2
 ```
 
