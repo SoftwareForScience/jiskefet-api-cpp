@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.2 FATAL_ERROR)
 
 project(
     JiskefetApiCpp
-    VERSION 0.3.2
+    VERSION 0.3.3
     LANGUAGES CXX)
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -87,9 +87,15 @@ target_link_libraries(jiskefet-api-cpp-example
 set(CMAKE_INSTALL_LIBDIR lib)
 
 install(TARGETS jiskefet-api-cpp-example JiskefetApiCpp
+    EXPORT JiskefetApiCppTargets
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+install(EXPORT JiskefetApiCppTargets
+    FILE JiskefetApiCppTargets.cmake
+    NAMESPACE jiskefetapicpp::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/JiskefetApiCpp")
 
 install(DIRECTORY src/ 
     DESTINATION include/jiskefet-api-cpp
