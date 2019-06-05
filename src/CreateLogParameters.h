@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
+#include <string>
 #include <cstdint>
-#include <cpprest/asyncrt_utils.h>
 #include "LogSubtype.h"
 #include "LogOrigin.h"
 
