@@ -25,6 +25,7 @@ aliBuild build Jiskefet-Api-Cpp --defaults=o2
 ```
 dnf install cpprest-devel boost-devel openssl-devel 
 git clone https://github.com/PascalBoeschoten/jiskefet-api-cpp.git
+cd jiskefet-api-cpp
 mkdir build; cd build
 cmake -DCPPREST_ROOT=/usr/include/cpprest ..
 ```

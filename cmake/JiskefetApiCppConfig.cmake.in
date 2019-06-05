@@ -13,6 +13,7 @@ if(NOT TARGET JiskefetApiCpp)
   include("${JiskefetApiCpp_CMAKE_DIR}/JiskefetApiCppTargets.cmake")
 endif()
 
-set(JiskefetApiCpp_LIBRARIES JiskefetApiCpp)
+#set_and_check(JiskefetApiCpp_LIBRARIES @PACKAGE_LIBRARIES@)
+#set_and_check(JiskefetApiCpp_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
 
 message(STATUS "JiskefetApiCpp ${JiskefetApiCpp_VERSION} found")

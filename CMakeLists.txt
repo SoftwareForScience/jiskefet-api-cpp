@@ -24,15 +24,6 @@ if( NOT DEFINED CPPREST_ROOT )
     message( FATAL_ERROR "Failed to find cpprest SDK (or missing components). Double check that \"CPPREST_ROOT\" is properly set")
 endif( NOT DEFINED CPPREST_ROOT )
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}
-    src/cpprest-client
-    src/cpprest-client/api
-    src/cpprest-client/model
-    ${CPPREST_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OPENSSL_INCLUDE_DIR})
-
 set(SOURCE_FILES
     src/cpprest-client/ApiClient.cpp
     src/cpprest-client/ApiConfiguration.cpp
@@ -68,41 +59,68 @@ set(SOURCE_FILES
     src/JiskefetApi.cpp
     src/JiskefetFactory.cpp)
 
-message (SOURCE_FILES ${SOURCE_FILES})
+add_library(
+    ${PROJECT_NAME}
+    ${SOURCE_FILES})
 
-add_library(${PROJECT_NAME} ${SOURCE_FILES})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_include_directories(
+    JiskefetApiCpp
+    PUBLIC
+    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/cpprest-client>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/cpprest-client/api>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/cpprest-client/model>
+    PRIVATE
+    ${CPPREST_INCLUDE_DIR}
+    ${Boost_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIR})
 
-add_executable(jiskefet-api-cpp-example src/Example.cpp)
-
-target_link_libraries(jiskefet-api-cpp-example 
-    ${PROJECT_NAME} 
+target_link_libraries(
+    JiskefetApiCpp
+    PRIVATE
     ${CPPREST_LIBRARIES} 
     ${Boost_LIBRARIES} 
     ${OPENSSL_LIBRARIES} 
     pthread)
 
+target_compile_features(
+    ${PROJECT_NAME}
+    PUBLIC
+    cxx_std_17)
+
+add_executable(
+    jiskefet-api-cpp-example
+    src/Example.cpp)
+
+target_link_libraries(
+    jiskefet-api-cpp-example 
+    PRIVATE
+    ${PROJECT_NAME})
+
 
 # Set CMAKE_INSTALL_LIBDIR explicitly to lib (to avoid lib64 on CC7)
 set(CMAKE_INSTALL_LIBDIR lib)
 
-install(TARGETS jiskefet-api-cpp-example JiskefetApiCpp
+install(
+    TARGETS jiskefet-api-cpp-example JiskefetApiCpp
     EXPORT JiskefetApiCppTargets
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-install(EXPORT JiskefetApiCppTargets
+install(
+    EXPORT JiskefetApiCppTargets
     FILE JiskefetApiCppTargets.cmake
-    NAMESPACE jiskefetapicpp::
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/JiskefetApiCpp")
 
-install(DIRECTORY src/ 
-    DESTINATION include/jiskefet-api-cpp
+install(
+    DIRECTORY src/
+    DESTINATION include/JiskefetApiCpp
     FILES_MATCHING PATTERN "*.h")
 
 # Configure and install package config files
 include(CMakePackageConfigHelpers)
+
 write_basic_package_version_file(
     "${CMAKE_CURRENT_BINARY_DIR}/cmake/JiskefetApiCppConfigVersion.cmake"
     VERSION ${PACKAGE_VERSION}
