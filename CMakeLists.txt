@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.2 FATAL_ERROR)
 
 project(
     JiskefetApiCpp
-    VERSION 0.3.3
+    VERSION 0.3.6
     LANGUAGES CXX)
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -70,16 +70,18 @@ target_include_directories(
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/cpprest-client>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/cpprest-client/api>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/cpprest-client/model>
+    PRIVATE
     ${CPPREST_INCLUDE_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR})
 
 target_link_libraries(
     JiskefetApiCpp
+    PUBLIC
+    ${Boost_LIBRARIES}
     PRIVATE
-    ${CPPREST_LIBRARIES} 
-    ${Boost_LIBRARIES} 
-    ${OPENSSL_LIBRARIES} 
+    ${CPPREST_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
     pthread)
 
 target_compile_features(
